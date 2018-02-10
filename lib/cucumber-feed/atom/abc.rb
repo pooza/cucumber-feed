@@ -1,8 +1,7 @@
-require 'watir-webdriver'
 require 'cucumber-feed/atom'
 
 module CucumberFeed
-  class ABCAtom < Atom
+  class AbcAtom < Atom
     def initialize
       super
       @config = Config.new

@@ -3,6 +3,9 @@ require 'active_support/core_ext'
 require 'syslog/logger'
 require 'cucumber-feed/config'
 require 'cucumber-feed/xml'
+require 'cucumber-feed/atom/toei'
+require 'cucumber-feed/atom/abc'
+require 'cucumber-feed/atom/garden'
 
 module CucumberFeed
   class Application < Sinatra::Base
@@ -47,25 +50,16 @@ module CucumberFeed
       return @renderer.generate(@message).to_s
     end
 
-    get '/feed/v1.0/site/toei' do
-      require 'cucumber-feed/atom/toei_atom'
-      @renderer = ToeiAtom.new
-      @renderer.title_length = params[:length]
-      @renderer.entries = params[:entries]
-      return @renderer.to_s
-    end
-
-    get '/feed/v1.0/site/abc' do
-      require 'cucumber-feed/atom/abc_atom'
-      @renderer = ABCAtom.new
-      @renderer.title_length = params[:length]
-      @renderer.entries = params[:entries]
-      return @renderer.to_s
-    end
-
-    get '/feed/v1.0/site/garden' do
-      require 'cucumber-feed/atom/garden_atom'
-      @renderer = GardenAtom.new
+    get '/feed/v1.0/site/:site' do
+      begin
+        @renderer = "CucumberFeed::#{params[:site].capitalize}Atom".constantize.new
+      rescue
+        @renderer = XML.new
+        @renderer.status = 404
+        @message[:response][:status] = @renderer.status
+        @message[:response][:message] = "#{params[:site].capitalize}Atom not found."
+        return @renderer.generate(@message).to_s
+      end
       @renderer.title_length = params[:length]
       @renderer.entries = params[:entries]
       return @renderer.to_s
