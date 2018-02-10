@@ -1,5 +1,4 @@
 require 'rss'
-require 'nokogiri'
 require 'open-uri'
 require 'cucumber-feed/renderer'
 require 'cucumber-feed/config'
@@ -36,16 +35,6 @@ module CucumberFeed
     end
 
     protected
-    def source
-      unless @sourcce
-        html = open(url) do |f|
-          f.read
-        end
-        @source = Nokogiri::HTML.parse(html.force_encoding('utf-8'), nil, 'utf-8')
-      end
-      return @source
-    end
-
     def entries
       raise 'entriesが未実装です。'
     end

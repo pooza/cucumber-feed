@@ -1,4 +1,5 @@
 require 'cucumber-feed/atom'
+require 'nokogiri'
 require 'time'
 
 module CucumberFeed
@@ -17,6 +18,16 @@ module CucumberFeed
     end
 
     protected
+    def source
+      unless @sourcce
+        html = open(url) do |f|
+          f.read
+        end
+        @source = Nokogiri::HTML.parse(html.force_encoding('utf-8'), nil, 'utf-8')
+      end
+      return @source
+    end
+
     def entries
       data = []
       path = '//div[@class="boxMain box--mainTopics box--top"]//a[@class="card__box"]'
