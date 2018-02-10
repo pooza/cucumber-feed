@@ -53,16 +53,14 @@ module CucumberFeed
     get '/feed/v1.0/site/:site' do
       begin
         @renderer = "CucumberFeed::#{params[:site].capitalize}Atom".constantize.new
-      rescue
+        return @renderer.to_s
+      rescue NameError => e
         @renderer = XML.new
         @renderer.status = 404
         @message[:response][:status] = @renderer.status
         @message[:response][:message] = "#{params[:site].capitalize}Atom not found."
         return @renderer.generate(@message).to_s
       end
-      @renderer.title_length = params[:length]
-      @renderer.entries = params[:entries]
-      return @renderer.to_s
     end
 
     not_found do

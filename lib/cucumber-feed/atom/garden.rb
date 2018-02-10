@@ -20,7 +20,7 @@ module CucumberFeed
     protected
     def source
       unless @sourcce
-        html = open(url) do |f|
+        html = open(source_url) do |f|
           f.read
         end
         @source = Nokogiri::HTML.parse(html.force_encoding('utf-8'), nil, 'utf-8')

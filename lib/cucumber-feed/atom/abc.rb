@@ -1,3 +1,4 @@
+require 'open-uri'
 require 'cucumber-feed/atom'
 
 module CucumberFeed
@@ -15,35 +16,24 @@ module CucumberFeed
       return 'https://www.asahi.co.jp/precure/'
     end
 
-    protected
-    def source
-      unless @sourcce
-        html = open(url) do |f|
-          f.read
-        end
-        @source = Nokogiri::HTML.parse(html.force_encoding('utf-8'), nil, 'utf-8')
-      end
-      return @source
+    def source_url
+      return 'https://www.asahi.co.jp/precure/hugtto/js/inc/news.js'
     end
 
+    protected
     def entries
       data = []
-require 'pp'
-pp source.xpath('//div[@id="news"]')
-      source.xpath('//ul[@class="news_list"]//li').each do |node|
-pp node
-
-        begin
-          data.push({
-            link: URI.parse(node.search('a').attribute('href')).to_s,
-            title: node.search('a').inner_html,
-            date: Time.parse(node.search('dt').inner_html),
-          })
-        rescue => e
-          # 当面、例外が発生したら捨てる
-        end
+      pattern = /\<li.*?\>.*?\<dt\>(.*?)\<\/dt\>.*?href=\"(.*?)\".*?\>(.*?)\<\/a\>.*?\<\/li\>/m
+      open(source_url).read.scan(pattern).each do |matches|
+        data.push({
+          date: Time.parse(matches[0]),
+          title: matches[2].force_encoding('utf-8'),
+          link: parse_url(matches[1]).to_s,
+        })
       end
       return data
+    rescue
+      return [] # 当面、例外が発生したら空配列を返す
     end
   end
 end

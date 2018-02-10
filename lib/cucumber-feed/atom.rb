@@ -22,12 +22,8 @@ module CucumberFeed
       raise 'フィードのURLが未定義です。'
     end
 
-    def title_length= (length)
-      @title_length = length.to_i unless length.nil?
-    end
-
-    def entries= (entries)
-      @entries = entries.to_i unless entries.nil?
+    def source_url
+      return url
     end
 
     def to_s
@@ -57,6 +53,15 @@ module CucumberFeed
           end
         end
       end
+    end
+
+    def parse_url (href)
+      url = URI::parse(href)
+      unless url.scheme
+        url = URI::parse(self.url)
+        url.path = href
+      end
+      return url
     end
   end
 end
