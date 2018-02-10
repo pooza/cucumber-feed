@@ -48,7 +48,7 @@ module CucumberFeed
     end
 
     get '/feed/v1.0/site/toei' do
-      require 'cucumber-feed/atom/toeiatom'
+      require 'cucumber-feed/atom/toei_atom'
       @renderer = ToeiAtom.new
       @renderer.title_length = params[:length]
       @renderer.entries = params[:entries]
@@ -56,7 +56,7 @@ module CucumberFeed
     end
 
     get '/feed/v1.0/site/abc' do
-      require 'cucumber-feed/atom/abcatom'
+      require 'cucumber-feed/atom/abc_atom'
       @renderer = ABCAtom.new
       @renderer.title_length = params[:length]
       @renderer.entries = params[:entries]
@@ -64,7 +64,7 @@ module CucumberFeed
     end
 
     get '/feed/v1.0/site/garden' do
-      require 'cucumber-feed/atom/gardenatom'
+      require 'cucumber-feed/atom/garden_atom'
       @renderer = GardenAtom.new
       @renderer.title_length = params[:length]
       @renderer.entries = params[:entries]
