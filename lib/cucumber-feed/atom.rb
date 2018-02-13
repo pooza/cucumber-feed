@@ -1,15 +1,9 @@
 require 'rss'
 require 'open-uri'
 require 'cucumber-feed/renderer'
-require 'cucumber-feed/config'
 
 module CucumberFeed
   class Atom < Renderer
-    def initialize
-      super
-      @config = Config.new
-    end
-
     def type
       return 'application/atom+xml; charset=UTF-8'
     end
@@ -41,7 +35,7 @@ module CucumberFeed
         maker.channel.title = channel_title
         maker.channel.description = "「#{channel_title}」の新着情報"
         maker.channel.link = url
-        maker.channel.author = @config['application']['author']
+        maker.channel.author = @config['local']['author']
         maker.channel.date = Time.now
         maker.items.do_sort = true
 
