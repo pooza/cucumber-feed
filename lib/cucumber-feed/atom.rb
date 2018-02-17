@@ -52,8 +52,11 @@ module CucumberFeed
     def parse_url (href)
       url = URI::parse(href)
       unless url.scheme
+        local_url = url
         url = URI::parse(self.url)
-        url.path = href
+        url.path = local_url.path
+        url.query = local_url.query
+        url.fragment = local_url.fragment
       end
       return url
     end
