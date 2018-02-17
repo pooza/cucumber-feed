@@ -38,8 +38,6 @@ module CucumberFeed
             title: node.search('p[@class="card__text"]').inner_html,
             date: Time.parse(node.search('p[@class="card__date card__icon--new"]').inner_html),
           })
-        rescue => e
-          # 当面、例外が発生したら捨てる
         end
       end
       return data

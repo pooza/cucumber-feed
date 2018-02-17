@@ -34,8 +34,6 @@ module CucumberFeed
         })
       end
       return data
-    rescue => e
-      return []
     end
   end
 end

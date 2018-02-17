@@ -32,8 +32,6 @@ module CucumberFeed
         })
       end
       return data
-    rescue
-      return [] # 当面、例外が発生したら空配列を返す
     end
   end
 end
