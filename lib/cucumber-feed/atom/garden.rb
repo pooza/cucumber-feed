@@ -4,11 +4,6 @@ require 'time'
 
 module CucumberFeed
   class GardenAtom < Atom
-    def initialize
-      super
-      @config = Config.new
-    end
-
     def channel_title
       return 'プリキュアガーデン'
     end
@@ -20,7 +15,7 @@ module CucumberFeed
     protected
     def source
       unless @sourcce
-        html = open(source_url) do |f|
+        html = open(source_url, headers) do |f|
           f.read
         end
         @source = Nokogiri::HTML.parse(html.force_encoding('utf-8'), nil, 'utf-8')

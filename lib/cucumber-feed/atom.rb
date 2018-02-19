@@ -1,5 +1,6 @@
 require 'rss'
 require 'open-uri'
+require 'cucumber-feed/application'
 require 'cucumber-feed/renderer'
 
 module CucumberFeed
@@ -18,6 +19,12 @@ module CucumberFeed
 
     def source_url
       return url
+    end
+
+    def headers
+      return {
+        'User-Agent' => "#{Application.full_name} #{Application.url}",
+      }
     end
 
     def to_s

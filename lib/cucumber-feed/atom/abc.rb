@@ -3,11 +3,6 @@ require 'cucumber-feed/atom'
 
 module CucumberFeed
   class AbcAtom < Atom
-    def initialize
-      super
-      @config = Config.new
-    end
-
     def channel_title
       return 'ABC毎日放送 プリキュア公式'
     end
@@ -24,7 +19,7 @@ module CucumberFeed
     def entries
       data = []
       pattern = /\<li.*?\>.*?\<dt\>(.*?)\<\/dt\>.*?href=\"(.*?)\".*?\>(.*?)\<\/a\>.*?\<\/li\>/m
-      open(source_url).read.scan(pattern).each do |matches|
+      open(source_url, headers).read.scan(pattern).each do |matches|
         data.push({
           date: Time.parse(matches[0]),
           title: matches[2].force_encoding('utf-8'),

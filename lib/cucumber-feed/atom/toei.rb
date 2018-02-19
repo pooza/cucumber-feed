@@ -5,11 +5,6 @@ require 'cucumber-feed/atom'
 
 module CucumberFeed
   class ToeiAtom < Atom
-    def initialize
-      super
-      @config = Config.new
-    end
-
     def channel_title
       return '東映アニメーション プリキュア公式'
     end
@@ -25,7 +20,7 @@ module CucumberFeed
     protected
     def entries
       data = []
-      JSON.parse(open(source_url).read)['news'].each do |entry|
+      JSON.parse(open(source_url, headers).read)['news'].each do |entry|
         element = XmlSimple.xml_in(entry['description'].gsub('&', '&amp;'))
         data.push({
           link: parse_url(element['href']).to_s,
