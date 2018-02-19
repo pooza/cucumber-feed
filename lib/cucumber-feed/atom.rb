@@ -1,4 +1,5 @@
 require 'rss'
+require 'digest/sha1'
 require 'open-uri'
 require 'cucumber-feed/application'
 require 'cucumber-feed/renderer'
@@ -28,7 +29,18 @@ module CucumberFeed
     end
 
     def to_s
-      return atom.to_s
+      if !File.exist?(cache_path) || expired?
+        File.write(cache_path, atom.to_s)
+      end
+      return File.read(cache_path)
+    rescue => e
+      Application.logger.error({
+        class: self.class.name,
+        exception: e.class,
+        message: e.message,
+      })
+      raise 'Feed not cached.' unless File.exist?(cache_path)
+      return File.read(cache_path)
     end
 
     protected
@@ -66,6 +78,20 @@ module CucumberFeed
         url.fragment = local_url.fragment
       end
       return url
+    end
+
+    def cache_path
+      return File.join(
+        ROOT_DIR,
+        'tmp/caches',
+        Digest::SHA1.hexdigest(self.class.name) + '.atom',
+      )
+    end
+
+    def expired?
+      return (
+        File.mtime(cache_path) < (Time.now - @config['application']['minutes'].minutes)
+      )
     end
   end
 end

@@ -13,8 +13,7 @@ module CucumberFeed
     def initialize
       super
       @config = Config.instance
-      @logger = Syslog::Logger.new(Application.name)
-      @logger.info({
+      Application.logger.info({
         message: 'starting...',
         package: {
           name: Application.name,
@@ -34,9 +33,9 @@ module CucumberFeed
     after do
       @message[:response][:status] ||= @renderer.status
       if (@renderer.status < 300)
-        @logger.info(@message.to_json)
+        Application.logger.info(@message.to_json)
       else
-        @logger.error(@message.to_json)
+        Application.logger.error(@message.to_json)
       end
       status @renderer.status
       content_type @renderer.type
@@ -103,6 +102,10 @@ module CucumberFeed
 
     def self.full_name
       return "#{Application.name} #{Application.version}"
+    end
+
+    def self.logger
+      return Syslog::Logger.new(Application.name)
     end
   end
 end
