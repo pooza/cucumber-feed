@@ -51,7 +51,7 @@ module CucumberFeed
 
     get '/about' do
       @message[:response][:status] = @renderer.status
-      @message[:response][:message] = self.full_name
+      @message[:response][:message] = Application.full_name
       @renderer.message = @message
       return @renderer.to_s
     end
