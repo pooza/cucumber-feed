@@ -1,6 +1,7 @@
 require 'active_support'
 require 'active_support/core_ext'
 require 'syslog/logger'
+require 'cucumber-feed/slack'
 require 'cucumber-feed/config'
 require 'cucumber-feed/xml'
 require 'cucumber-feed/html'
@@ -13,6 +14,7 @@ module CucumberFeed
     def initialize
       super
       @config = Config.instance
+      @slack = Slack.new if @config['local']['slack']
       Application.logger.info({
         message: 'starting...',
         package: {
@@ -82,6 +84,7 @@ module CucumberFeed
       @renderer.status = 500
       @message[:response][:message] = env['sinatra.error'].message
       @renderer.message = @message
+      @slack.say(message) if @slack
       return @renderer.to_s
     end
 

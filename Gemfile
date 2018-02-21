@@ -7,4 +7,6 @@ gem 'xml-simple'
 gem 'sinatra'
 gem 'thin'
 gem 'syslog-logger'
+gem 'httparty'
+gem 'addressable'
 
