@@ -10,8 +10,7 @@ module CucumberFeed
       Dir.glob(File.join(ROOT_DIR, 'config', '*.yaml')).each do |f|
         self[File.basename(f, '.yaml')] = YAML.load_file(f)
       end
-      self['local'] ||= {}
-      self['local']['entries'] ||= {'default' => 50, 'max' => 200}
+      raise 'local.yamlが見つかりません。' unless self['local']
     end
   end
 end
