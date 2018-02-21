@@ -84,7 +84,7 @@ module CucumberFeed
       @renderer.status = 500
       @message[:response][:message] = env['sinatra.error'].message
       @renderer.message = @message
-      @slack.say(message) if @slack
+      @slack.say(@message) if @slack
       return @renderer.to_s
     end
 
