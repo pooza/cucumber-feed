@@ -18,6 +18,7 @@ module CucumberFeed
         package: {
           name: Application.name,
           version: Application.version,
+          url: Application.url,
         },
         server: {
           port: @config['thin']['port'],
@@ -32,7 +33,7 @@ module CucumberFeed
 
     after do
       @message[:response][:status] ||= @renderer.status
-      if (@renderer.status < 300)
+      if (@renderer.status < 400)
         Application.logger.info(@message.to_json)
       else
         Application.logger.error(@message.to_json)
@@ -50,7 +51,6 @@ module CucumberFeed
     end
 
     get '/about' do
-      @message[:response][:status] = @renderer.status
       @message[:response][:message] = Application.full_name
       @renderer.message = @message
       return @renderer.to_s
@@ -63,7 +63,6 @@ module CucumberFeed
       rescue NameError => e
         @renderer = XML.new
         @renderer.status = 404
-        @message[:response][:status] = @renderer.status
         @message[:response][:message] = "#{params[:site].capitalize}Atom not found."
         @renderer.message = @message
         return @renderer.to_s
@@ -73,7 +72,6 @@ module CucumberFeed
     not_found do
       @renderer = XML.new
       @renderer.status = 404
-      @message[:response][:status] = @renderer.status
       @message[:response][:message] = "Resource #{@message[:request][:path]} not found."
       @renderer.message = @message
       return @renderer.to_s
@@ -82,7 +80,6 @@ module CucumberFeed
     error do
       @renderer = XML.new
       @renderer.status = 500
-      @message[:response][:status] = @renderer.status
       @message[:response][:message] = env['sinatra.error'].message
       @renderer.message = @message
       return @renderer.to_s
