@@ -1,7 +1,7 @@
 require 'rss'
 require 'digest/sha1'
 require 'open-uri'
-require 'cucumber-feed/application'
+require 'cucumber-feed/package'
 require 'cucumber-feed/renderer'
 
 module CucumberFeed
@@ -24,7 +24,7 @@ module CucumberFeed
 
     def headers
       return {
-        'User-Agent' => "#{Application.full_name} #{Application.url}",
+        'User-Agent' => "#{Package.full_name} #{Package.url}",
       }
     end
 
@@ -34,9 +34,9 @@ module CucumberFeed
       end
       return File.read(cache_path)
     rescue => e
-      Application.logger.error({
-        class: self.class.name,
-        exception: e.class,
+      Logger.new(Package.name).error({
+        feed: self.class.name,
+        class: e.class,
         message: e.message,
       })
       raise 'Feed not cached.' unless File.exist?(cache_path)
