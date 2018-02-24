@@ -1,6 +1,6 @@
 package:
   name: cucumber-feed
-  version: 0.4.1
+  version: 0.4.2
   url: https://github.com/pooza/cucumber-feed
 author: pooza@b-shock.org
 minutes: 5
