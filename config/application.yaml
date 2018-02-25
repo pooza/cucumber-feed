@@ -1,6 +1,8 @@
 package:
   name: cucumber-feed
-  version: 0.4.2
+  version: 0.4.3
   url: https://github.com/pooza/cucumber-feed
+external_urls:
+  mechokku: https://docs.google.com/spreadsheets/d/1tvVK9m09UfzQebd_VHORgOSoIkw_Cj3xi2m_zdys5Rw/edit#gid=0
 author: pooza@b-shock.org
 minutes: 5
