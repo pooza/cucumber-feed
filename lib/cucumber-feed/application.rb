@@ -1,3 +1,4 @@
+require 'sinatra'
 require 'active_support'
 require 'active_support/core_ext'
 require 'cucumber-feed/slack'
@@ -52,6 +53,11 @@ module CucumberFeed
         @renderer.template_file = 'index.erb'
         return @renderer.to_s
       end
+    end
+
+    get '/mechokku' do
+      @renderer.status = 302
+      redirect @config['application']['external_urls']['mechokku']
     end
 
     get '/about' do
