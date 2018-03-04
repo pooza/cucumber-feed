@@ -34,11 +34,13 @@ module CucumberFeed
       end
       return File.read(cache_path)
     rescue => e
-      Logger.new(Package.name).error({
+      message = {
         feed: self.class.name,
-        class: e.class,
+        exception: e.class,
         message: e.message,
-      })
+      }
+      Logger.new(Package.name).error(message)
+      Slack.new.say(message) if @config['local']['slack']
       raise 'Feed not cached.' unless File.exist?(cache_path)
       return File.read(cache_path)
     end
