@@ -3,4 +3,4 @@ Thumbs.db
 ._*
 Gemfile.lock
 config/local.yaml
-tmp/
+config/local.yml
