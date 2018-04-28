@@ -22,7 +22,7 @@ module CucumberFeed
       open(source_url, headers).read.scan(pattern).each do |matches|
         data.push({
           date: Time.parse(matches[0]),
-          title: matches[2].force_encoding('utf-8'),
+          title: sanitize(matches[2].force_encoding('utf-8')),
           link: parse_url(matches[1]).to_s,
         })
       end

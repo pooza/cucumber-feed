@@ -9,4 +9,4 @@ gem 'thin'
 gem 'syslog-logger'
 gem 'httparty'
 gem 'addressable'
-
+gem 'sanitize'

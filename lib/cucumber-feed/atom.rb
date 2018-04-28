@@ -3,6 +3,7 @@ require 'digest/sha1'
 require 'open-uri'
 require 'cucumber-feed/package'
 require 'cucumber-feed/renderer'
+require 'sanitize'
 
 module CucumberFeed
   class Atom < Renderer
@@ -39,7 +40,7 @@ module CucumberFeed
         exception: e.class,
         message: e.message,
       }
-      Logger.new(Package.name).error(message)
+      Logger.new.error(message)
       Slack.new.say(message) if @config['local']['slack']
       raise 'Feed not cached.' unless File.exist?(cache_path)
       return File.read(cache_path)
@@ -94,6 +95,11 @@ module CucumberFeed
       return (
         File.mtime(cache_path) < (Time.now - @config['application']['minutes'].minutes)
       )
+    end
+
+    protected
+    def sanitize (body)
+      return Sanitize.clean(body)
     end
   end
 end

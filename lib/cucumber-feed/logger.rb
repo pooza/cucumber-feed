@@ -1,10 +1,11 @@
 require 'json'
 require 'syslog/logger'
+require 'cucumber-feed/package'
 
 module CucumberFeed
   class Logger
-    def initialize (name)
-      @logger = Syslog::Logger.new(name)
+    def initialize
+      @logger = Syslog::Logger.new(Package.name)
     end
 
     def info (message)

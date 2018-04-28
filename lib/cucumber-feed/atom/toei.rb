@@ -24,7 +24,7 @@ module CucumberFeed
         element = XmlSimple.xml_in(entry['url'] + "</a>")
         data.push({
           link: parse_url(element['href']).to_s,
-          title: entry['description'],
+          title: sanitize(entry['description']),
           date: Time.parse(entry['date']),
         })
       end

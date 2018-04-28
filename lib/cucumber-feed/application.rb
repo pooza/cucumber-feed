@@ -16,7 +16,7 @@ module CucumberFeed
     def initialize
       super
       @config = Config.instance
-      @logger = Logger.new(Package.name)
+      @logger = Logger.new
       @slack = Slack.new if @config['local']['slack']
       @logger.info({
         message: 'starting...',

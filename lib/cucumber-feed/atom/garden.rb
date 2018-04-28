@@ -30,7 +30,7 @@ module CucumberFeed
         begin
           data.push({
             link: URI.parse(url + node.attribute('href')).to_s,
-            title: node.search('p[@class="card__text"]').inner_html,
+            title: sanitize(node.search('p[@class="card__text"]').inner_html),
             date: Time.parse(node.search('p[@class="card__date card__icon--new"]').inner_html),
           })
         end
