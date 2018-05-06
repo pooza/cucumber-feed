@@ -1,4 +1,5 @@
 require 'erb'
+require 'cucumber-feed/renderer'
 
 module CucumberFeed
   class HTML < Renderer
