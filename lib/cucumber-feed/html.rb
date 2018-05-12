@@ -3,7 +3,7 @@ require 'cucumber-feed/renderer'
 
 module CucumberFeed
   class HTML < Renderer
-    attr :template_file, true
+    attr_accessor :template_file
 
     def type
       return 'text/html; charset=UTF-8'
@@ -14,6 +14,7 @@ module CucumberFeed
     end
 
     private
+
     def template
       raise 'テンプレートが未指定です。' unless @template_file
       return File.read(File.join(ROOT_DIR, 'views', @template_file))

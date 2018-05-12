@@ -13,11 +13,10 @@ module CucumberFeed
     end
 
     protected
+
     def source
       unless @sourcce
-        html = open(source_url, headers) do |f|
-          f.read
-        end
+        html = open(source_url, headers, &:read)
         @source = Nokogiri::HTML.parse(html.force_encoding('utf-8'), nil, 'utf-8')
       end
       return @source

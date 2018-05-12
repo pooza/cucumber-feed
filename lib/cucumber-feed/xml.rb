@@ -3,13 +3,14 @@ require 'cucumber-feed/renderer'
 
 module CucumberFeed
   class XML < Renderer
-    attr :message, true
+    attr_accessor :message
 
     def to_s
       return xml.to_s
     end
 
     private
+
     def xml
       raise 'messageが未定義です。' unless @message
       xml = REXML::Document.new

@@ -18,10 +18,11 @@ module CucumberFeed
     end
 
     protected
+
     def entries
       data = []
       JSON.parse(open(source_url, headers).read)['news'].each do |entry|
-        element = XmlSimple.xml_in(entry['url'] + "</a>")
+        element = XmlSimple.xml_in(entry['url'] + '</a>')
         data.push({
           link: parse_url(element['href']).to_s,
           title: sanitize(entry['description']),

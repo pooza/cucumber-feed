@@ -16,6 +16,7 @@ module CucumberFeed
     end
 
     protected
+
     def entries
       data = []
       pattern = /\<li.*?\>.*?\<dt\>(.*?)\<\/dt\>.*?href=\"(.*?)\".*?\>(.*?)\<\/a\>.*?\<\/li\>/m

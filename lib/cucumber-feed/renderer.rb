@@ -2,7 +2,7 @@ require 'cucumber-feed/config'
 
 module CucumberFeed
   class Renderer
-    attr :status, true
+    attr_accessor :status
 
     def initialize
       @status = 200

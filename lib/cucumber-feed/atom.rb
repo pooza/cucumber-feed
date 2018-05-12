@@ -30,9 +30,7 @@ module CucumberFeed
     end
 
     def to_s
-      if !File.exist?(cache_path) || expired?
-        File.write(cache_path, atom.to_s)
-      end
+      File.write(cache_path, atom.to_s) if !File.exist?(cache_path) || expired?
       return File.read(cache_path)
     rescue => e
       message = {
@@ -47,6 +45,7 @@ module CucumberFeed
     end
 
     protected
+
     def entries
       raise 'entriesが未実装です。'
     end
@@ -71,11 +70,11 @@ module CucumberFeed
       end
     end
 
-    def parse_url (href)
-      url = URI::parse(href)
+    def parse_url(href)
+      url = URI.parse(href)
       unless url.scheme
         local_url = url
-        url = URI::parse(self.url)
+        url = URI.parse(self.url)
         url.path = local_url.path
         url.query = local_url.query
         url.fragment = local_url.fragment
@@ -98,7 +97,8 @@ module CucumberFeed
     end
 
     protected
-    def sanitize (body)
+
+    def sanitize(body)
       return Sanitize.clean(body)
     end
   end
