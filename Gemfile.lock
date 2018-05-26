@@ -29,7 +29,7 @@ GEM
     rack-protection (2.0.1)
       rack
     rake (12.3.1)
-    sanitize (4.6.4)
+    sanitize (4.6.5)
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4)
@@ -65,4 +65,4 @@ DEPENDENCIES
   xml-simple
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
