@@ -29,7 +29,7 @@ module CucumberFeed
         title.shift
         title.shift
         data.push({
-          link: URI.parse(url + node.attribute('href')).to_s,
+          link: parse_url(node.attribute('href')).to_s,
           title: title.join(' '),
           date: Time.parse(node.search('span[@class="day"]').inner_text),
         })
