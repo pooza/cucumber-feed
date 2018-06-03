@@ -1,7 +1,6 @@
-require 'json'
-require 'xmlsimple'
-require 'uri'
 require 'cucumber-feed/atom'
+require 'nokogiri'
+require 'time'
 
 module CucumberFeed
   class ToeiAtom < Atom
@@ -13,20 +12,26 @@ module CucumberFeed
       return 'http://www.toei-anim.co.jp/tv/precure/'
     end
 
-    def source_url
-      return 'http://www.toei-anim.co.jp/tv/precure/news.json'
-    end
-
     protected
+
+    def source
+      unless @sourcce
+        html = open(source_url, headers, &:read)
+        @source = Nokogiri::HTML.parse(html.force_encoding('utf-8'), nil, 'utf-8')
+      end
+      return @source
+    end
 
     def entries
       data = []
-      JSON.parse(open(source_url, headers).read)['news'].each do |entry|
-        element = XmlSimple.xml_in(entry['url'] + '</a>')
+      source.xpath('//ul[@class="news_list"]//a').each do |node|
+        title = node.search('p').inner_text.split(/\s+/)
+        title.shift
+        title.shift
         data.push({
-          link: parse_url(element['href']).to_s,
-          title: sanitize(entry['description']),
-          date: Time.parse(entry['date']),
+          link: URI.parse(url + node.attribute('href')).to_s,
+          title: title.join(' '),
+          date: Time.parse(node.search('span[@class="day"]').inner_text),
         })
       end
       return data

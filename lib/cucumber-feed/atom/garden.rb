@@ -26,13 +26,11 @@ module CucumberFeed
       data = []
       path = '//div[@class="boxMain box--mainTopics box--top"]//a[@class="card__box"]'
       source.xpath(path).each do |node|
-        begin
-          data.push({
-            link: URI.parse(url + node.attribute('href')).to_s,
-            title: sanitize(node.search('p[@class="card__text"]').inner_html),
-            date: Time.parse(node.search('p[@class="card__date card__icon--new"]').inner_html),
-          })
-        end
+        data.push({
+          link: URI.parse(url + node.attribute('href')).to_s,
+          title: node.search('p[@class="card__text"]').inner_text,
+          date: Time.parse(node.search('p[@class="card__date card__icon--new"]').inner_text),
+        })
       end
       return data
     end
