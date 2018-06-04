@@ -19,8 +19,8 @@ module CucumberFeed
 
     def entries
       data = []
-      pattern = /\<li.*?\>.*?\<dt\>(.*?)\<\/dt\>.*?href=\"(.*?)\".*?\>(.*?)\<\/a\>.*?\<\/li\>/m
-      open(source_url, headers).read.scan(pattern).each do |matches|
+      pattern = %r{\<li.*?\>.*?\<dt\>(.*?)\</dt\>.*?href=\"(.*?)\".*?\>(.*?)\</a\>.*?\</li\>}m
+      URI.parse(source_url).open(headers).read.scan(pattern).each do |matches|
         data.push({
           date: Time.parse(matches[0]),
           title: sanitize(matches[2].force_encoding('utf-8')),
