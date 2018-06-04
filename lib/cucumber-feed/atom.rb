@@ -96,8 +96,6 @@ module CucumberFeed
       )
     end
 
-    protected
-
     def sanitize(body)
       return Sanitize.clean(body)
     end

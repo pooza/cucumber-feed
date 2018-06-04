@@ -3,7 +3,7 @@ require 'cucumber-feed/config'
 module CucumberFeed
   module Package
     def self.name
-      return File.basename(ROOT_DIR)
+      return 'cucumber-feed'
     end
 
     def self.version

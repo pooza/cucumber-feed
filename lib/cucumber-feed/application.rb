@@ -17,7 +17,6 @@ module CucumberFeed
       super
       @config = Config.instance
       @logger = Logger.new
-      @slack = Slack.new if @config['local']['slack']
       @logger.info({
         message: 'starting...',
         server: {port: @config['thin']['port']},
@@ -63,7 +62,7 @@ module CucumberFeed
       begin
         @renderer = "CucumberFeed::#{params[:site].capitalize}Atom".constantize.new
         return @renderer.to_s
-      rescue NameError => e
+      rescue NameError
         @renderer = XML.new
         @renderer.status = 404
         @message[:response][:message] = "#{params[:site].capitalize}Atom not found."
@@ -85,7 +84,7 @@ module CucumberFeed
       @renderer.status = 500
       @message[:response][:message] = env['sinatra.error'].message
       @renderer.message = @message
-      @slack.say(@message) if @slack
+      Slack.all.map{ |h| h.say(@message)}
       return @renderer.to_s
     end
   end
