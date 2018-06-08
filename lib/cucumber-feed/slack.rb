@@ -3,7 +3,7 @@ require 'httparty'
 require 'json'
 require 'cucumber-feed/config'
 require 'cucumber-feed/logger'
-require 'radish-feed/package'
+require 'cucumber-feed/package'
 
 module CucumberFeed
   class Slack
