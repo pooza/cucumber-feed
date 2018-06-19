@@ -39,7 +39,7 @@ module CucumberFeed
         message: e.message,
       }
       Logger.new.error(message)
-      Slack.new.say(message) if @config['local']['slack']
+      Slack.all.map{ |h| h.say(message)}
       raise 'Feed not cached.' unless File.exist?(cache_path)
       return File.read(cache_path)
     end
