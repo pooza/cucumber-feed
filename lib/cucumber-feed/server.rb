@@ -12,7 +12,7 @@ require 'cucumber-feed/package'
 require 'cucumber-feed/logger'
 
 module CucumberFeed
-  class Application < Sinatra::Base
+  class Server < Sinatra::Base
     def initialize
       super
       @config = Config.instance
