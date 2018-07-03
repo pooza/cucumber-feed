@@ -12,7 +12,7 @@ require 'cucumber-feed/package'
 require 'cucumber-feed/logger'
 
 module CucumberFeed
-  class Application < Sinatra::Base
+  class Server < Sinatra::Base
     def initialize
       super
       @config = Config.instance
@@ -31,7 +31,7 @@ module CucumberFeed
     after do
       @message[:response][:status] ||= @renderer.status
       if @renderer.status < 400
-        @logger.info(@message)
+        @logger.info(@message.select{ |k, v| [:request, :response, :package].member?(k)})
       else
         @logger.error(@message)
       end
@@ -79,10 +79,11 @@ module CucumberFeed
       return @renderer.to_s
     end
 
-    error do
+    error do |e|
       @renderer = XML.new
       @renderer.status = 500
-      @message[:response][:message] = env['sinatra.error'].message
+      @message[:response][:message] = "#{e.class}: #{e.message}"
+      @message[:backtrace] = e.backtrace[0..5]
       @renderer.message = @message
       Slack.all.map{ |h| h.say(@message)}
       return @renderer.to_s

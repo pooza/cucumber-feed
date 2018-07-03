@@ -37,6 +37,7 @@ module CucumberFeed
         feed: self.class.name,
         exception: e.class,
         message: e.message,
+        backtrace: e.backtrace[0..5],
       }
       Logger.new.error(message)
       Slack.all.map{ |h| h.say(message)}
