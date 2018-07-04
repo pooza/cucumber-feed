@@ -25,7 +25,7 @@ module CucumberFeed
 
     def headers
       return {
-        'User-Agent' => "#{Package.full_name} #{Package.url}",
+        'User-Agent' => Package.user_agent,
       }
     end
 
@@ -39,8 +39,8 @@ module CucumberFeed
         message: e.message,
         backtrace: e.backtrace[0..5],
       }
-      Logger.new.error(message)
-      Slack.all.map{ |h| h.say(message)}
+      @logger.error(message)
+      Slack.broadcast(message)
       raise 'Feed not cached.' unless File.exist?(cache_path)
       return File.read(cache_path)
     end
