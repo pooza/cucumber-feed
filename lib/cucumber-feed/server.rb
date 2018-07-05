@@ -85,7 +85,7 @@ module CucumberFeed
       @message[:response][:message] = "#{e.class}: #{e.message}"
       @message[:backtrace] = e.backtrace[0..5]
       @renderer.message = @message
-      Slack.all.map{ |h| h.say(@message)}
+      Slack.broadcast(@message)
       return @renderer.to_s
     end
   end
