@@ -25,12 +25,9 @@ module CucumberFeed
     def entries
       data = []
       source.xpath('//ul[@class="news_list"]//a').each do |node|
-        title = node.search('p').inner_text.split(/\s+/)
-        title.shift
-        title.shift
         data.push({
           link: parse_url(node.attribute('href')).to_s,
-          title: title.join(' '),
+          title: node.search('p').inner_text.gsub(/\s+/, ' ').strip,
           date: Time.parse(node.search('span[@class="day"]').inner_text),
         })
       end
