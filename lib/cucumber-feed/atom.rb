@@ -106,16 +106,7 @@ module CucumberFeed
         maker.items.do_sort = true
 
         entries.each do |entry|
-          unless entry[:title].present?
-            message = {
-              feed: self.class.name,
-              message: 'Empty title',
-              date: entry[:date],
-              link: entry[:link],
-            }
-            @logger.error(message)
-            Slack.broadcast(message)
-          end
+          handle_blank_title(entry) unless entry[:title].present?
           maker.items.new_item do |item|
             item.link = entry[:link]
             item.title = entry[:title]
@@ -123,6 +114,13 @@ module CucumberFeed
           end
         end
       end
+    end
+
+    def handle_blank_title(entry)
+      message = {feed: self.class.name, message: 'Blank title'}
+      message.update(entry)
+      @logger.error(message)
+      Slack.broadcast(message)
     end
 
     def parse_url(href)
