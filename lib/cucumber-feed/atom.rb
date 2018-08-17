@@ -51,15 +51,13 @@ module CucumberFeed
       File.write(cache_path, atom.to_s)
       File.write(digest_path, JSON.pretty_generate(digest))
       raise 'Error: fetching entries' if contents_updated? && !entries_updated?
-
-      @logger.info({
-        action: 'crawl',
+      message = {
         feed: self.class.name,
-        url: url.to_s,
-        source_url: source_url.to_s,
         cache_path: cache_path,
         digest_path: digest_path,
-      })
+      }
+      @logger.info(message)
+      return message
     rescue => e
       message = {
         feed: self.class.name,
