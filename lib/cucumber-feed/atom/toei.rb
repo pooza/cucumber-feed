@@ -29,15 +29,17 @@ module CucumberFeed
     end
 
     def entries
-      data = []
-      source.xpath('//ul[@class="news_list"]//a').each do |node|
-        data.push({
-          link: parse_url(node.attribute('href')).to_s,
-          title: node.search('p').inner_text.gsub(/\s+/, ' ').strip,
-          date: Time.parse(node.search('span[@class="day"]').inner_text),
-        })
+      unless @entries
+        @entries = []
+        source.xpath('//ul[@class="news_list"]//a').each do |node|
+          @entries.push({
+            link: parse_url(node.attribute('href')).to_s,
+            title: node.search('p').inner_text.gsub(/\s+/, ' ').strip,
+            date: Time.parse(node.search('span[@class="day"]').inner_text),
+          })
+        end
       end
-      return data
+      return @entries
     end
   end
 end

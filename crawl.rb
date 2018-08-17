@@ -11,7 +11,5 @@ require 'active_support/core_ext'
 require 'cucumber-feed/atom'
 
 CucumberFeed::Atom.all do |atom|
-  begin
-    atom.crawl
-  end
+  atom.crawl
 end

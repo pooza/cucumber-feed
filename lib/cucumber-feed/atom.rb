@@ -3,6 +3,7 @@ require 'digest/sha1'
 require 'addressable/uri'
 require 'httparty'
 require 'sanitize'
+require 'json'
 require 'cucumber-feed/package'
 require 'cucumber-feed/renderer'
 require 'cucumber-feed/slack'
@@ -12,12 +13,6 @@ module CucumberFeed
   class Atom < Renderer
     attr_reader :digest
     attr_reader :prev_digest
-
-    def initialize
-      super
-      @digest = Digest::SHA1.hexdigest(contents)
-      @prev_digest = File.read(digest_path) if File.exist?(digest_path)
-    end
 
     def type
       return 'application/atom+xml; charset=UTF-8'
@@ -55,13 +50,11 @@ module CucumberFeed
       return File.read(cache_path)
     end
 
-    def updated?
-      return (@digest != @prev_digest)
-    end
-
     def crawl
       File.write(cache_path, atom.to_s)
-      File.write(digest_path, Digest::SHA1.hexdigest(contents))
+      File.write(digest_path, JSON.pretty_generate(digest))
+      raise 'Error: fetching entries' if contents_updated? && !entries_updated?
+
       @logger.info({
         action: 'crawl',
         url: url.to_s,
@@ -143,6 +136,25 @@ module CucumberFeed
         }).to_s
       end
       return @contents
+    end
+
+    def digest
+      return {
+        contents: Digest::SHA1.hexdigest(contents),
+        entries: Digest::SHA1.hexdigest(entries.to_json),
+      }
+    end
+
+    def prev_digest
+      return JSON.parse(File.read(digest_path), {symbolize_names: true})
+    end
+
+    def contents_updated?
+      return (digest[:contents] != prev_digest[:contents])
+    end
+
+    def entries_updated?
+      return (digest[:entries] != prev_digest[:entries])
     end
 
     def cache_path

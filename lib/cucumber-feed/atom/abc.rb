@@ -18,16 +18,18 @@ module CucumberFeed
     protected
 
     def entries
-      data = []
-      pattern = %r{\<li.*?\>.*?\<dt\>(.*?)\</dt\>.*?href=\"(.*?)\".*?\>(.*?)\</a\>.*?\</li\>}m
-      HTTParty.get(source_url, {headers: headers}).to_s.scan(pattern).each do |matches|
-        data.push({
-          date: Time.parse(matches[0]),
-          title: sanitize(matches[2].force_encoding('utf-8')),
-          link: parse_url(matches[1]).to_s,
-        })
+      unless @entries
+        @entries = []
+        pattern = %r{\<li.*?\>.*?\<dt\>(.*?)\</dt\>.*?href=\"(.*?)\".*?\>(.*?)\</a\>.*?\</li\>}m
+        HTTParty.get(source_url, {headers: headers}).to_s.scan(pattern).each do |matches|
+          @entries.push({
+            date: Time.parse(matches[0]),
+            title: sanitize(matches[2].force_encoding('utf-8')),
+            link: parse_url(matches[1]).to_s,
+          })
+        end
       end
-      return data
+      return @entries
     end
   end
 end
