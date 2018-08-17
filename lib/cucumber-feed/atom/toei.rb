@@ -1,6 +1,7 @@
 require 'cucumber-feed/atom'
 require 'nokogiri'
 require 'time'
+require 'httparty'
 
 module CucumberFeed
   class ToeiAtom < Atom
@@ -16,8 +17,13 @@ module CucumberFeed
 
     def source
       unless @sourcce
-        html = URI.parse(source_url).open(headers, &:read)
-        @source = Nokogiri::HTML.parse(html.force_encoding('utf-8'), nil, 'utf-8')
+        @source = Nokogiri::HTML.parse(
+          HTTParty.get(source_url, {
+            headers: headers,
+          }).to_s.force_encoding('utf-8'),
+          nil,
+          'utf-8',
+        )
       end
       return @source
     end

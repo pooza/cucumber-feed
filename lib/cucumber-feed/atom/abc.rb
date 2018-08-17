@@ -1,5 +1,5 @@
-require 'open-uri'
 require 'cucumber-feed/atom'
+require 'httparty'
 
 module CucumberFeed
   class AbcAtom < Atom
@@ -20,7 +20,7 @@ module CucumberFeed
     def entries
       data = []
       pattern = %r{\<li.*?\>.*?\<dt\>(.*?)\</dt\>.*?href=\"(.*?)\".*?\>(.*?)\</a\>.*?\</li\>}m
-      URI.parse(source_url).open(headers).read.scan(pattern).each do |matches|
+      HTTParty.get(source_url, {headers: headers}).to_s.scan(pattern).each do |matches|
         data.push({
           date: Time.parse(matches[0]),
           title: sanitize(matches[2].force_encoding('utf-8')),
