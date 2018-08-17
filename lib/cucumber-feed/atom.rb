@@ -11,9 +11,6 @@ require 'cucumber-feed/logger'
 
 module CucumberFeed
   class Atom < Renderer
-    attr_reader :digest
-    attr_reader :prev_digest
-
     def type
       return 'application/atom+xml; charset=UTF-8'
     end
@@ -130,11 +127,9 @@ module CucumberFeed
     end
 
     def contents
-      unless @contents
-        @contents = HTTParty.get(url, {
-          headers: headers,
-        }).to_s
-      end
+      @contents ||= HTTParty.get(url, {
+        headers: headers,
+      }).to_s
       return @contents
     end
 

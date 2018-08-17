@@ -10,6 +10,4 @@ require 'active_support'
 require 'active_support/core_ext'
 require 'cucumber-feed/atom'
 
-CucumberFeed::Atom.all do |atom|
-  atom.crawl
-end
+CucumberFeed::Atom.all(&:crawl)
