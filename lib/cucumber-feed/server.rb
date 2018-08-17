@@ -4,10 +4,7 @@ require 'active_support/core_ext'
 require 'cucumber-feed/slack'
 require 'cucumber-feed/config'
 require 'cucumber-feed/xml'
-require 'cucumber-feed/html'
-require 'cucumber-feed/atom/toei'
-require 'cucumber-feed/atom/abc'
-require 'cucumber-feed/atom/garden'
+require 'cucumber-feed/atom'
 require 'cucumber-feed/package'
 require 'cucumber-feed/logger'
 
@@ -39,19 +36,6 @@ module CucumberFeed
       content_type @renderer.type
     end
 
-    ['/', '/index'].each do |route|
-      get route do
-        @renderer = HTML.new
-        @renderer.template_file = 'index.erb'
-        return @renderer.to_s
-      end
-    end
-
-    get '/mechokku' do
-      @renderer.status = 302
-      redirect @config['application']['external_urls']['mechokku']
-    end
-
     get '/about' do
       @message[:response][:message] = Package.full_name
       @renderer.message = @message
@@ -60,7 +44,7 @@ module CucumberFeed
 
     get '/feed/v1.0/site/:site' do
       begin
-        @renderer = "CucumberFeed::#{params[:site].capitalize}Atom".constantize.new
+        @renderer = Atom.create(params[:site])
         return @renderer.to_s
       rescue NameError
         @renderer = XML.new

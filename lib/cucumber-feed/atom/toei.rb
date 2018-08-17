@@ -1,6 +1,7 @@
 require 'cucumber-feed/atom'
 require 'nokogiri'
 require 'time'
+require 'httparty'
 
 module CucumberFeed
   class ToeiAtom < Atom
@@ -16,22 +17,29 @@ module CucumberFeed
 
     def source
       unless @sourcce
-        html = URI.parse(source_url).open(headers, &:read)
-        @source = Nokogiri::HTML.parse(html.force_encoding('utf-8'), nil, 'utf-8')
+        @source = Nokogiri::HTML.parse(
+          HTTParty.get(source_url, {
+            headers: headers,
+          }).to_s.force_encoding('utf-8'),
+          nil,
+          'utf-8',
+        )
       end
       return @source
     end
 
     def entries
-      data = []
-      source.xpath('//ul[@class="news_list"]//a').each do |node|
-        data.push({
-          link: parse_url(node.attribute('href')).to_s,
-          title: node.search('p').inner_text.gsub(/\s+/, ' ').strip,
-          date: Time.parse(node.search('span[@class="day"]').inner_text),
-        })
+      unless @entries
+        @entries = []
+        source.xpath('//ul[@class="news_list"]//a').each do |node|
+          @entries.push({
+            link: parse_url(node.attribute('href')).to_s,
+            title: node.search('p').inner_text.gsub(/\s+/, ' ').strip,
+            date: Time.parse(node.search('span[@class="day"]').inner_text),
+          })
+        end
       end
-      return data
+      return @entries
     end
   end
 end
