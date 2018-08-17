@@ -30,7 +30,7 @@ module CucumberFeed
     end
 
     def to_s
-      File.write(cache_path, atom.to_s) if !File.exist?(cache_path) || expired?
+      File.write(cache_path, atom.to_s) unless exist?
       return File.read(cache_path)
     rescue => e
       message = {
@@ -89,6 +89,10 @@ module CucumberFeed
         'tmp/caches',
         Digest::SHA1.hexdigest(self.class.name) + '.atom',
       )
+    end
+
+    def exist?
+      return File.exist?(cache_path)
     end
 
     def expired?
