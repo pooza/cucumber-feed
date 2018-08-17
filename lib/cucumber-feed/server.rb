@@ -4,7 +4,6 @@ require 'active_support/core_ext'
 require 'cucumber-feed/slack'
 require 'cucumber-feed/config'
 require 'cucumber-feed/xml'
-require 'cucumber-feed/html'
 require 'cucumber-feed/atom'
 require 'cucumber-feed/package'
 require 'cucumber-feed/logger'
@@ -35,19 +34,6 @@ module CucumberFeed
       end
       status @renderer.status
       content_type @renderer.type
-    end
-
-    ['/', '/index'].each do |route|
-      get route do
-        @renderer = HTML.new
-        @renderer.template_file = 'index.erb'
-        return @renderer.to_s
-      end
-    end
-
-    get '/mechokku' do
-      @renderer.status = 302
-      redirect @config['application']['external_urls']['mechokku']
     end
 
     get '/about' do
