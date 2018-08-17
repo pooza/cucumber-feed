@@ -10,6 +10,11 @@ require 'bundler/setup'
   task action => ["server:#{action}"]
 end
 
+desc 'crawl Atom feeds'
+task 'crawl' do
+  sh File.join(ROOT_DIR, 'crawl.rb')
+end
+
 namespace :server do
   [:start, :stop, :restart].each do |action|
     desc "#{action} thin"
