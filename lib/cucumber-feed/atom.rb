@@ -1,6 +1,6 @@
 require 'rss'
 require 'digest/sha1'
-require 'open-uri'
+require 'addressable/uri'
 require 'cucumber-feed/package'
 require 'cucumber-feed/renderer'
 require 'sanitize'
@@ -72,10 +72,10 @@ module CucumberFeed
     end
 
     def parse_url(href)
-      url = URI.parse(href)
-      unless url.scheme
+      url = Addressable::URI.parse(href)
+      unless url.absolute?
         local_url = url
-        url = URI.parse(self.url)
+        url = Addressable::URI.parse(self.url)
         url.path = local_url.path
         url.query = local_url.query
         url.fragment = local_url.fragment
