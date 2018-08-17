@@ -1,6 +1,10 @@
 package:
   version: 1.0.0
   url: https://github.com/pooza/cucumber-feed
+atom:
+  - abc
+  - garden
+  - toei
 external_urls:
   mechokku: https://docs.google.com/spreadsheets/d/1tvVK9m09UfzQebd_VHORgOSoIkw_Cj3xi2m_zdys5Rw
 author: pooza@b-shock.org
