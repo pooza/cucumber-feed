@@ -1,14 +1,24 @@
 require 'rss'
 require 'digest/sha1'
 require 'addressable/uri'
+require 'httparty'
+require 'sanitize'
 require 'cucumber-feed/package'
 require 'cucumber-feed/renderer'
 require 'cucumber-feed/slack'
 require 'cucumber-feed/logger'
-require 'sanitize'
 
 module CucumberFeed
   class Atom < Renderer
+    attr_reader :digest
+    attr_reader :prev_digest
+
+    def initialize
+      super
+      @digest = Digest::SHA1.hexdigest(contents)
+      @prev_digest = File.read(digest_path) if File.exist?(digest_path)
+    end
+
     def type
       return 'application/atom+xml; charset=UTF-8'
     end
@@ -29,12 +39,6 @@ module CucumberFeed
       return url
     end
 
-    def headers
-      return {
-        'User-Agent' => Package.user_agent,
-      }
-    end
-
     def to_s
       crawl unless exist?
       return File.read(cache_path)
@@ -51,13 +55,19 @@ module CucumberFeed
       return File.read(cache_path)
     end
 
+    def updated?
+      return (@digest != @prev_digest)
+    end
+
     def crawl
       File.write(cache_path, atom.to_s)
+      File.write(digest_path, Digest::SHA1.hexdigest(contents))
       @logger.info({
         action: 'crawl',
         url: url.to_s,
         source_url: source_url.to_s,
-        path: cache_path,
+        cache_path: cache_path,
+        digest_path: digest_path,
       })
     rescue => e
       message = {
@@ -83,6 +93,12 @@ module CucumberFeed
     end
 
     protected
+
+    def headers
+      return {
+        'User-Agent' => Package.user_agent,
+      }
+    end
 
     def entries
       raise 'entriesが未実装です。'
@@ -120,6 +136,15 @@ module CucumberFeed
       return url
     end
 
+    def contents
+      unless @contents
+        @contents = HTTParty.get(url, {
+          headers: headers,
+        }).to_s
+      end
+      return @contents
+    end
+
     def cache_path
       return File.join(
         ROOT_DIR,
@@ -128,8 +153,16 @@ module CucumberFeed
       )
     end
 
+    def digest_path
+      return File.join(
+        ROOT_DIR,
+        'tmp/digests',
+        Digest::SHA1.hexdigest(self.class.name) + '.sha1',
+      )
+    end
+
     def exist?
-      return File.exist?(cache_path)
+      return File.exist?(cache_path) && File.exist?(digest_path)
     end
 
     def expired?
