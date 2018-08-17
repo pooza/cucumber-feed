@@ -54,6 +54,7 @@ module CucumberFeed
 
       @logger.info({
         action: 'crawl',
+        feed: self.class.name,
         url: url.to_s,
         source_url: source_url.to_s,
         cache_path: cache_path,
@@ -105,6 +106,16 @@ module CucumberFeed
         maker.items.do_sort = true
 
         entries.each do |entry|
+          unless entry[:title].present?
+            message = {
+              feed: self.class.name,
+              message: 'Empty title',
+              date: entry[:date],
+              link: entry[:link],
+            }
+            @logger.error(message)
+            Slack.broadcast(message)
+          end
           maker.items.new_item do |item|
             item.link = entry[:link]
             item.title = entry[:title]
