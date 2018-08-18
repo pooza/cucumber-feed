@@ -1,4 +1,3 @@
-require 'cucumber-feed/slack'
 require 'cucumber-feed/atom/toei'
 
 module CucumberFeed
