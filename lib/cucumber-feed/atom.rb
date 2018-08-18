@@ -179,12 +179,6 @@ module CucumberFeed
       return File.exist?(cache_path) && File.exist?(digest_path)
     end
 
-    def expired?
-      return (
-        File.mtime(cache_path) < (Time.now - @config['application']['minutes'].minutes)
-      )
-    end
-
     def sanitize(body)
       return Sanitize.clean(body)
     end
