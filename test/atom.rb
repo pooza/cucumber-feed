@@ -1,10 +1,10 @@
-require 'cucumber-feed/atom'
+require 'cucumber-feed/rss'
 
 module CucumberFeed
-  class AtomTest < Test::Unit::TestCase
+  class RSSTest < Test::Unit::TestCase
     def test_all
-      Atom.all do |atom|
-        assert_true(atom.is_a?(Atom))
+      RSS.all do |rss|
+        assert_true(rss.is_a?(RSS))
       end
     end
   end

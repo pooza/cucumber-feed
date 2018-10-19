@@ -49,7 +49,7 @@ module CucumberFeed
       rescue NameError
         @renderer = XML.new
         @renderer.status = 404
-        @message[:response][:message] = "#{params[:site].capitalize}Atom not found."
+        @message[:response][:message] = "#{params[:site].capitalize}RSS not found."
         @renderer.message = @message
         return @renderer.to_s
       end

@@ -95,15 +95,8 @@ module CucumberFeed
 
     def rss
       return ::RSS::Maker.make('2.0') do |maker|
-        maker.channel.id = url
-        maker.channel.title = channel_title
-        maker.channel.description = description
-        maker.channel.link = url
-        maker.channel.author = @config['local']['author']
-        maker.channel.date = Time.now
-        maker.channel.generator = Package.user_agent
+        update_channel(maker.channel)
         maker.items.do_sort = true
-
         entries.each do |entry|
           handle_blank_title(entry) unless entry[:title].present?
           maker.items.new_item do |item|
@@ -119,6 +112,16 @@ module CucumberFeed
           end
         end
       end
+    end
+
+    def update_channel(channel)
+      channel.id = url
+      channel.title = channel_title
+      channel.description = description
+      channel.link = url
+      channel.author = @config['local']['author']
+      channel.date = Time.now
+      channel.generator = Package.user_agent
     end
 
     def handle_blank_title(entry)

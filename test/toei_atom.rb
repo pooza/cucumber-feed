@@ -1,19 +1,19 @@
-require 'cucumber-feed/atom/toei'
+require 'cucumber-feed/rss/toei'
 
 module CucumberFeed
-  class ToeiAtomTest < Test::Unit::TestCase
+  class ToeiRSSTest < Test::Unit::TestCase
     def setup
-      @atom = ToeiAtom.new
+      @rss = ToeiRSS.new
     end
 
     def test_crawl
-      result = @atom.crawl
+      result = @rss.crawl
       assert_true(File.exist?(result[:cache_path]))
       assert_true(File.exist?(result[:digest_path]))
     end
 
     def test_to_s
-      assert_true(@atom.to_s.present?)
+      assert_true(@rss.to_s.present?)
     end
   end
 end

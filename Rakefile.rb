@@ -15,7 +15,7 @@ task :test do
   end
 end
 
-desc 'crawl Atom feeds'
+desc 'crawl RSS feeds'
 task 'crawl' do
   sh File.join(ROOT_DIR, 'crawl.rb')
 end
