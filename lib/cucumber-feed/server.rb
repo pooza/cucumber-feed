@@ -4,7 +4,7 @@ require 'active_support/core_ext'
 require 'cucumber-feed/slack'
 require 'cucumber-feed/config'
 require 'cucumber-feed/xml'
-require 'cucumber-feed/atom'
+require 'cucumber-feed/rss'
 require 'cucumber-feed/package'
 require 'cucumber-feed/logger'
 
@@ -44,7 +44,7 @@ module CucumberFeed
 
     get '/feed/v1.0/site/:site' do
       begin
-        @renderer = Atom.create(params[:site])
+        @renderer = RSS.create(params[:site])
         return @renderer.to_s
       rescue NameError
         @renderer = XML.new

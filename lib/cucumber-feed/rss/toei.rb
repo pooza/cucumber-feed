@@ -1,17 +1,16 @@
-require 'cucumber-feed/atom'
+require 'cucumber-feed/rss'
 require 'nokogiri'
 require 'time'
-require 'addressable/uri'
 require 'httparty'
 
 module CucumberFeed
-  class GardenAtom < Atom
+  class ToeiRSS < RSS
     def channel_title
-      return 'プリキュアガーデン'
+      return '東映アニメーション プリキュア公式'
     end
 
     def url
-      return 'http://www.toei-anim.co.jp/ptr/precure/'
+      return 'http://www.toei-anim.co.jp/tv/precure/'
     end
 
     protected
@@ -32,12 +31,12 @@ module CucumberFeed
     def entries
       unless @entries
         @entries = []
-        path = '//div[@class="boxMain box--mainTopics box--top"]//a[@class="card__box"]'
-        source.xpath(path).each do |node|
+        source.xpath('//ul[@class="news_list"]//a').each do |node|
           @entries.push({
-            link: Addressable::URI.parse(url + node.attribute('href')).to_s,
-            title: node.search('p[@class="card__text"]').inner_text,
-            date: Time.parse(node.search('p[@class="card__date card__icon--new"]').inner_text),
+            link: parse_url(node.attribute('href')).to_s,
+            title: node.search('p').inner_text.gsub(/\s+/, ' ').strip,
+            date: Time.parse(node.search('span[@class="day"]').inner_text),
+            image: node.search('img').attribute('src').value,
           })
         end
       end

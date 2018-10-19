@@ -10,9 +10,9 @@ require 'cucumber-feed/slack'
 require 'cucumber-feed/logger'
 
 module CucumberFeed
-  class Atom < Renderer
+  class RSS < Renderer
     def type
-      return 'application/atom+xml; charset=UTF-8'
+      return 'application/rss+xml; charset=UTF-8'
     end
 
     def channel_title
@@ -48,7 +48,7 @@ module CucumberFeed
     end
 
     def crawl
-      File.write(cache_path, atom.to_s)
+      File.write(cache_path, rss.to_s)
       File.write(digest_path, JSON.pretty_generate(digest))
       raise 'Error: fetching entries' if contents_updated? && !entries_updated?
       message = {
@@ -70,13 +70,13 @@ module CucumberFeed
     end
 
     def self.create(name)
-      require "cucumber-feed/atom/#{name}"
-      return "CucumberFeed::#{name.capitalize}Atom".constantize.new
+      require "cucumber-feed/rss/#{name}"
+      return "CucumberFeed::#{name.capitalize}RSS".constantize.new
     end
 
     def self.all
       return enum_for(__method__) unless block_given?
-      Config.instance['application']['atom'].each do |name|
+      Config.instance['application']['rss'].each do |name|
         yield create(name)
       end
     end
@@ -93,14 +93,15 @@ module CucumberFeed
       raise 'entriesが未実装です。'
     end
 
-    def atom
-      return RSS::Maker.make('atom') do |maker|
+    def rss
+      return ::RSS::Maker.make('2.0') do |maker|
         maker.channel.id = url
         maker.channel.title = channel_title
         maker.channel.description = description
         maker.channel.link = url
         maker.channel.author = @config['local']['author']
         maker.channel.date = Time.now
+        maker.channel.generator = Package.user_agent
         maker.items.do_sort = true
 
         entries.each do |entry|
@@ -109,6 +110,12 @@ module CucumberFeed
             item.link = entry[:link]
             item.title = entry[:title]
             item.date = entry[:date]
+            next unless entry[:image]
+            url = parse_url(entry[:image])
+            response = HTTParty.get(url)
+            item.enclosure.url = url.to_s
+            item.enclosure.length = response.body.length
+            item.enclosure.type = response.headers['Content-Type']
           end
         end
       end
@@ -163,7 +170,7 @@ module CucumberFeed
       return File.join(
         ROOT_DIR,
         'tmp/caches',
-        Digest::SHA1.hexdigest(self.class.name) + '.atom',
+        Digest::SHA1.hexdigest(self.class.name) + '.rss',
       )
     end
 

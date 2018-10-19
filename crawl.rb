@@ -10,6 +10,6 @@ ENV['SSL_CERT_FILE'] ||= File.join(ROOT_DIR, 'cert/cacert.pem')
 require 'bundler/setup'
 require 'active_support'
 require 'active_support/core_ext'
-require 'cucumber-feed/atom'
+require 'cucumber-feed/rss'
 
-CucumberFeed::Atom.all(&:crawl)
+CucumberFeed::RSS.all(&:crawl)
