@@ -1,11 +1,11 @@
-require 'cucumber-feed/rss'
+require 'cucumber-feed/feed_renderer'
 require 'nokogiri'
 require 'time'
 require 'addressable/uri'
 require 'httparty'
 
 module CucumberFeed
-  class GardenRSS < RSS
+  class GardenFeedRenderer < FeedRenderer
     def channel_title
       return 'プリキュアガーデン'
     end
@@ -17,15 +17,13 @@ module CucumberFeed
     protected
 
     def source
-      unless @sourcce
-        @source = Nokogiri::HTML.parse(
-          HTTParty.get(source_url, {
-            headers: headers,
-          }).to_s.force_encoding('utf-8'),
-          nil,
-          'utf-8',
-        )
-      end
+      @source ||= Nokogiri::HTML.parse(
+        HTTParty.get(source_url, {
+          headers: headers,
+        }).to_s.force_encoding('utf-8'),
+        nil,
+        'utf-8',
+      )
       return @source
     end
 

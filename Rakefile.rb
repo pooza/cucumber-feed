@@ -15,7 +15,7 @@ task :test do
   end
 end
 
-desc 'crawl RSS feeds'
+desc 'crawl feeds'
 task 'crawl' do
   sh File.join(ROOT_DIR, 'crawl.rb')
 end
@@ -27,7 +27,7 @@ end
 
 namespace :server do
   [:start, :stop, :restart].each do |action|
-    desc "#{action} thin"
+    desc "#{action} server"
     task action do
       sh "thin --config config/thin.yaml #{action}"
     end

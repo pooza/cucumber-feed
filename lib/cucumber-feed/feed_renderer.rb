@@ -8,15 +8,35 @@ require 'cucumber-feed/package'
 require 'cucumber-feed/renderer'
 require 'cucumber-feed/slack'
 require 'cucumber-feed/logger'
+require 'cucumber-feed/error/request'
+require 'cucumber-feed/error/imprement'
+require 'cucumber-feed/error/not_found'
+require 'cucumber-feed/error/external_service'
 
 module CucumberFeed
-  class RSS < Renderer
+  class FeedRenderer < Renderer
+    def initialize
+      super
+      self.type = 'rss'
+    end
+
+    def type=(name)
+      case name.to_s
+      when 'rss'
+        @type = 'application/rss+xml; charset=UTF-8'
+      when 'atom'
+        @type = 'application/atom+xml; charset=UTF-8'
+      else
+        raise RequestError, "Invalid type '#{name || '(nil)'}'"
+      end
+    end
+
     def type
-      return 'application/rss+xml; charset=UTF-8'
+      return @type
     end
 
     def channel_title
-      raise 'チャンネルタイトルが未定義です。'
+      raise ImprementError, "#{__method__}が未定義です。"
     end
 
     def description
@@ -24,7 +44,7 @@ module CucumberFeed
     end
 
     def url
-      raise 'フィードのURLが未定義です。'
+      raise ImprementError, "#{__method__}が未定義です。"
     end
 
     def source_url
@@ -33,7 +53,7 @@ module CucumberFeed
 
     def to_s
       crawl unless exist?
-      return File.read(cache_path)
+      return File.read(cache_path(type))
     rescue => e
       message = {
         feed: self.class.name,
@@ -43,19 +63,19 @@ module CucumberFeed
       }
       @logger.error(message)
       Slack.broadcast(message)
-      raise 'Feed not cached.' unless File.exist?(cache_path)
-      return File.read(cache_path)
+      raise NotFoundError, 'Cache not found.' unless File.exist?(cache_path(type))
+      return File.read(cache_path(type))
     end
 
     def crawl
-      File.write(cache_path, rss.to_s)
       File.write(digest_path, JSON.pretty_generate(digest))
-      raise 'Error: fetching entries' if contents_updated? && !entries_updated?
-      message = {
-        feed: self.class.name,
-        cache_path: cache_path,
-        digest_path: digest_path,
-      }
+      message = {digest: digest_path}
+      [:atom, :rss].each do |type|
+        path = cache_path(type)
+        File.write(path, feed(type).to_s)
+        message[type] = path
+      end
+      raise ExternalServiceError, 'Invalid contents' if contents_updated? && !entries_updated?
       @logger.info(message)
       return message
     rescue => e
@@ -70,13 +90,13 @@ module CucumberFeed
     end
 
     def self.create(name)
-      require "cucumber-feed/rss/#{name}"
-      return "CucumberFeed::#{name.capitalize}RSS".constantize.new
+      require "cucumber-feed/renderer/#{name}_feed"
+      return "CucumberFeed::#{name.capitalize}FeedRenderer".constantize.new
     end
 
     def self.all
       return enum_for(__method__) unless block_given?
-      Config.instance['application']['rss'].each do |name|
+      Config.instance['application']['feeds'].each do |name|
         yield create(name)
       end
     end
@@ -90,11 +110,11 @@ module CucumberFeed
     end
 
     def entries
-      raise 'entriesが未実装です。'
+      raise ImprementError, "#{__method__}が未定義です。"
     end
 
-    def rss
-      return ::RSS::Maker.make('2.0') do |maker|
+    def feed(type)
+      return ::RSS::Maker.make(create_feed_type(type)) do |maker|
         update_channel(maker.channel)
         maker.items.do_sort = true
         entries.each do |entry|
@@ -169,11 +189,27 @@ module CucumberFeed
       return (digest[:entries] != prev_digest[:entries])
     end
 
-    def cache_path
+    def create_feed_type(type)
+      return '2.0' if type.to_s == 'rss'
+      return type.to_s
+    end
+
+    def create_extension(type)
+      case type.to_s.split(/[\s;]+/).first.downcase
+      when '', 'rss', 'application/rss+xml'
+        return '.rss'
+      when 'atom', 'application/atom+xml'
+        return '.atom'
+      else
+        return nil
+      end
+    end
+
+    def cache_path(type)
       return File.join(
         ROOT_DIR,
         'tmp/caches',
-        Digest::SHA1.hexdigest(self.class.name) + '.rss',
+        Digest::SHA1.hexdigest(self.class.name) + create_extension(type),
       )
     end
 
@@ -186,7 +222,10 @@ module CucumberFeed
     end
 
     def exist?
-      return File.exist?(cache_path) && File.exist?(digest_path)
+      return false unless File.exist?(cache_path(:rss))
+      return false unless File.exist?(cache_path(:atom))
+      return false unless File.exist?(digest_path)
+      return true
     end
 
     def sanitize(body)
