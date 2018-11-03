@@ -1,5 +1,5 @@
 module CucumberFeed
-  class ImprementError < ::StandardError
+  class ImprementError < StandardError
     def status
       return 500
     end

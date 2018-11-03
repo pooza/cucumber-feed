@@ -106,7 +106,7 @@ module CucumberFeed
     end
 
     def feed(type)
-      return ::RSS::Maker.make(create_feed_type(type)) do |maker|
+      return RSS::Maker.make(create_feed_type(type)) do |maker|
         update_channel(maker.channel)
         maker.items.do_sort = true
         entries.each do |entry|

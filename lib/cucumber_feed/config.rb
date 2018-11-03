@@ -2,7 +2,7 @@ require 'yaml'
 require 'singleton'
 
 module CucumberFeed
-  class Config < ::Hash
+  class Config < Hash
     include Singleton
 
     def initialize

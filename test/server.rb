@@ -16,9 +16,12 @@ module CucumberFeed
           assert_equal(response.headers['content-type'], types[suffix])
         end
       end
+      assert_equal(HTTParty.get(create_url('/error')).code, 404)
       assert_equal(HTTParty.get(create_url('/feed/v1.0/site/abc1')).code, 404)
       assert_equal(HTTParty.get(create_url('/feed/v1.0/site/abc.rss2')).code, 400)
     end
+
+    private
 
     def create_url(href)
       url = Addressable::URI.parse("http://localhost:#{@config['thin']['port']}")

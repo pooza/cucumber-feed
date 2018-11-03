@@ -41,7 +41,7 @@ module CucumberFeed
         @renderer = FeedRenderer.create(site)
         @renderer.type = type
         return @renderer.to_s
-      rescue ::LoadError
+      rescue LoadError
         raise NotFoundError, "Resource #{@message[:request][:path]} not found."
       end
     end
@@ -58,7 +58,7 @@ module CucumberFeed
       @renderer = XmlRenderer.new
       begin
         @renderer.status = e.status
-      rescue ::NoMethodError
+      rescue NoMethodError
         @renderer.status = 500
       end
       @message[:response][:message] = "#{e.class}: #{e.message}"
