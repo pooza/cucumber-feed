@@ -14,7 +14,7 @@ module CucumberFeed
 
     before do
       @message = {request: {path: request.path, params: params}, response: {}}
-      @renderer = XMLRenderer.new
+      @renderer = XmlRenderer.new
     end
 
     after do
@@ -47,7 +47,7 @@ module CucumberFeed
     end
 
     not_found do
-      @renderer = XMLRenderer.new
+      @renderer = XmlRenderer.new
       @renderer.status = 404
       @message[:response][:message] = "Resource #{@message[:request][:path]} not found."
       @renderer.message = @message
@@ -55,7 +55,7 @@ module CucumberFeed
     end
 
     error do |e|
-      @renderer = XMLRenderer.new
+      @renderer = XmlRenderer.new
       begin
         @renderer.status = e.status
       rescue ::NoMethodError
