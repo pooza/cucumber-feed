@@ -9,7 +9,7 @@ module CucumberFeed
     end
 
     def test_get
-      @config['application']['rss'].each do |key|
+      @config['application']['feeds'].each do |key|
         url = Addressable::URI.parse("http://localhost:#{@config['thin']['port']}")
         url.path = "/feed/v1.0/site/#{key}"
         assert_true(HTTParty.get(url).to_s.present?)

@@ -46,7 +46,7 @@ module CucumberFeed
       begin
         @renderer = FeedRenderer.create(params[:site])
         return @renderer.to_s
-      rescue NameError
+      rescue ::NameError
         @renderer = XMLRenderer.new
         @renderer.status = 404
         @message[:response][:message] = "#{params[:site].capitalize}FeedRenderer not found."

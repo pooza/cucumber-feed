@@ -16,7 +16,7 @@ module CucumberFeed
     protected
 
     def source
-      unless @sourcce
+      unless @source
         @source = Nokogiri::HTML.parse(
           HTTParty.get(source_url, {
             headers: headers,

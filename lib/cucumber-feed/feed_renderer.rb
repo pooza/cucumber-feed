@@ -32,8 +32,12 @@ module CucumberFeed
     end
 
     def to_s
+      return render(:rss)
+    end
+
+    def render(type)
       crawl unless exist?
-      return File.read(cache_path)
+      return File.read(cache_path(type))
     rescue => e
       message = {
         feed: self.class.name,
@@ -43,19 +47,19 @@ module CucumberFeed
       }
       @logger.error(message)
       Slack.broadcast(message)
-      raise 'Feed not cached.' unless File.exist?(cache_path)
-      return File.read(cache_path)
+      raise 'Feed not cached.' unless File.exist?(cache_path(type))
+      return File.read(cache_path(type))
     end
 
     def crawl
-      File.write(cache_path, rss.to_s)
       File.write(digest_path, JSON.pretty_generate(digest))
+      message = {digest: digest_path}
+      [:atom, :rss].each do |type|
+        path = cache_path(type)
+        File.write(path, feed(type).to_s)
+        message[type] = path
+      end
       raise 'Error: fetching entries' if contents_updated? && !entries_updated?
-      message = {
-        feed: self.class.name,
-        cache_path: cache_path,
-        digest_path: digest_path,
-      }
       @logger.info(message)
       return message
     rescue => e
@@ -76,7 +80,7 @@ module CucumberFeed
 
     def self.all
       return enum_for(__method__) unless block_given?
-      Config.instance['application']['rss'].each do |name|
+      Config.instance['application']['feeds'].each do |name|
         yield create(name)
       end
     end
@@ -93,8 +97,10 @@ module CucumberFeed
       raise 'entriesが未実装です。'
     end
 
-    def rss
-      return ::RSS::Maker.make('2.0') do |maker|
+    def feed(type)
+      type = type.to_s
+      type = '2.0' if type == 'rss'
+      return ::RSS::Maker.make(type) do |maker|
         update_channel(maker.channel)
         maker.items.do_sort = true
         entries.each do |entry|
@@ -169,11 +175,22 @@ module CucumberFeed
       return (digest[:entries] != prev_digest[:entries])
     end
 
-    def cache_path
+    def create_extension(type)
+      case type.to_s
+      when '', 'rss', 'rss2'
+        return '.rss'
+      when 'atom'
+        return '.atom'
+      else
+        return nil
+      end
+    end
+
+    def cache_path(type)
       return File.join(
         ROOT_DIR,
         'tmp/caches',
-        Digest::SHA1.hexdigest(self.class.name) + '.rss',
+        Digest::SHA1.hexdigest(self.class.name) + create_extension(type),
       )
     end
 
@@ -186,7 +203,10 @@ module CucumberFeed
     end
 
     def exist?
-      return File.exist?(cache_path) && File.exist?(digest_path)
+      return false unless File.exist?(cache_path(:rss))
+      return false unless File.exist?(cache_path(:atom))
+      return false unless File.exist?(digest_path)
+      return true
     end
 
     def sanitize(body)
