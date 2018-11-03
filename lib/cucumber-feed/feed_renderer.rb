@@ -15,17 +15,20 @@ require 'cucumber-feed/error/external_service'
 
 module CucumberFeed
   class FeedRenderer < Renderer
+    def initialize
+      super
+      type = 'rss'
+    end
+
     def type=(name)
       case name.to_s
       when 'rss'
-        name = 'application/rss+xml; charset=UTF-8'
+        @type = 'application/rss+xml; charset=UTF-8'
       when 'atom'
-        name = 'application/atom+xml; charset=UTF-8'
+        @type = 'application/atom+xml; charset=UTF-8'
       else
-        name ||= '(nil)'
-        raise RequestError, "Invalid type '#{name}'"
+        raise RequestError, "Invalid type '#{name || '(nil)'}'"
       end
-      @type = name
     end
 
     def type
