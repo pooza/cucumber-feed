@@ -13,9 +13,13 @@ module CucumberFeed
       assert_true(File.exist?(result[:digest]))
     end
 
-    def test_render
-      assert_true(@renderer.render(:rss).present?)
-      assert_true(@renderer.render(:atom).present?)
+    def test_to_s
+      @renderer.type = 'rss'
+      assert_true(@renderer.to_s.present?)
+      assert_equal(@renderer.type, 'application/rss+xml; charset=UTF-8')
+      @renderer.type = 'atom'
+      assert_true(@renderer.to_s.present?)
+      assert_equal(@renderer.type, 'application/atom+xml; charset=UTF-8')
     end
   end
 end

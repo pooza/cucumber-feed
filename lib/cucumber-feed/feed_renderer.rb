@@ -11,8 +11,21 @@ require 'cucumber-feed/logger'
 
 module CucumberFeed
   class FeedRenderer < Renderer
+    def type=(name)
+      case name.to_s
+      when 'rss'
+        name = 'application/rss+xml; charset=UTF-8'
+      when 'atom'
+        name = 'application/atom+xml; charset=UTF-8'
+      else
+        name ||= '(nil)'
+        raise "Invalid type '#{name}'"
+      end
+      @type = name
+    end
+
     def type
-      return 'application/rss+xml; charset=UTF-8'
+      return @type
     end
 
     def channel_title
@@ -32,10 +45,6 @@ module CucumberFeed
     end
 
     def to_s
-      return render(:rss)
-    end
-
-    def render(type)
       crawl unless exist?
       return File.read(cache_path(type))
     rescue => e
@@ -176,10 +185,10 @@ module CucumberFeed
     end
 
     def create_extension(type)
-      case type.to_s
-      when '', 'rss', 'rss2'
+      case type.to_s.split(/[\s;]+/).first.downcase
+      when '', 'rss', 'application/rss+xml'
         return '.rss'
-      when 'atom'
+      when 'atom', 'application/atom+xml'
         return '.atom'
       else
         return nil

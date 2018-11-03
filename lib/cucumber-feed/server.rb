@@ -42,14 +42,17 @@ module CucumberFeed
       return @renderer.to_s
     end
 
-    get '/feed/v1.0/site/:site' do
+    get '/feed/v1.0/site/:name' do
       begin
-        @renderer = FeedRenderer.create(params[:site])
+        site, type = params[:name].split('.')
+        type ||= 'rss'
+        @renderer = FeedRenderer.create(site)
+        @renderer.type = type
         return @renderer.to_s
-      rescue ::NameError
+      rescue ::LoadError
         @renderer = XMLRenderer.new
         @renderer.status = 404
-        @message[:response][:message] = "#{params[:site].capitalize}FeedRenderer not found."
+        @message[:response][:message] = "Resource #{@message[:request][:path]} not found."
         @renderer.message = @message
         return @renderer.to_s
       end
