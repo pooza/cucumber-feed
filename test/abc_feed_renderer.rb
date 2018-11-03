@@ -1,9 +1,9 @@
-require 'cucumber-feed/rss/garden'
+require 'cucumber-feed/renderer/abc_feed'
 
 module CucumberFeed
-  class GardenRSSTest < Test::Unit::TestCase
+  class AbcFeedRendererTest < Test::Unit::TestCase
     def setup
-      @rss = GardenRSS.new
+      @rss = AbcFeedRenderer.new
     end
 
     def test_crawl

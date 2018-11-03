@@ -1,10 +1,9 @@
-require 'cucumber-feed/slack'
-require 'cucumber-feed/rss/abc'
+require 'cucumber-feed/renderer/toei_feed'
 
 module CucumberFeed
-  class AbcRSSTest < Test::Unit::TestCase
+  class ToeiFeedRendererTest < Test::Unit::TestCase
     def setup
-      @rss = AbcRSS.new
+      @rss = ToeiFeedRenderer.new
     end
 
     def test_crawl

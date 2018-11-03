@@ -3,8 +3,8 @@ require 'active_support'
 require 'active_support/core_ext'
 require 'cucumber-feed/slack'
 require 'cucumber-feed/config'
-require 'cucumber-feed/xml'
-require 'cucumber-feed/rss'
+require 'cucumber-feed/renderer/xml'
+require 'cucumber-feed/feed_renderer'
 require 'cucumber-feed/package'
 require 'cucumber-feed/logger'
 
@@ -22,7 +22,7 @@ module CucumberFeed
 
     before do
       @message = {request: {path: request.path, params: params}, response: {}}
-      @renderer = XML.new
+      @renderer = XMLRenderer.new
     end
 
     after do
@@ -44,19 +44,19 @@ module CucumberFeed
 
     get '/feed/v1.0/site/:site' do
       begin
-        @renderer = RSS.create(params[:site])
+        @renderer = FeedRenderer.create(params[:site])
         return @renderer.to_s
       rescue NameError
-        @renderer = XML.new
+        @renderer = XMLRenderer.new
         @renderer.status = 404
-        @message[:response][:message] = "#{params[:site].capitalize}RSS not found."
+        @message[:response][:message] = "#{params[:site].capitalize}FeedRenderer not found."
         @renderer.message = @message
         return @renderer.to_s
       end
     end
 
     not_found do
-      @renderer = XML.new
+      @renderer = XMLRenderer.new
       @renderer.status = 404
       @message[:response][:message] = "Resource #{@message[:request][:path]} not found."
       @renderer.message = @message
@@ -64,7 +64,7 @@ module CucumberFeed
     end
 
     error do |e|
-      @renderer = XML.new
+      @renderer = XMLRenderer.new
       @renderer.status = 500
       @message[:response][:message] = "#{e.class}: #{e.message}"
       @message[:backtrace] = e.backtrace[0..5]

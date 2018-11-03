@@ -1,11 +1,11 @@
-require 'cucumber-feed/rss'
+require 'cucumber-feed/feed_renderer'
 require 'nokogiri'
 require 'time'
 require 'addressable/uri'
 require 'httparty'
 
 module CucumberFeed
-  class GardenRSS < RSS
+  class GardenFeedRenderer < FeedRenderer
     def channel_title
       return 'プリキュアガーデン'
     end

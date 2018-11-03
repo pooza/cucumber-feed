@@ -2,7 +2,7 @@ require 'rexml/document'
 require 'cucumber-feed/renderer'
 
 module CucumberFeed
-  class XML < Renderer
+  class XMLRenderer < Renderer
     attr_accessor :message
 
     def to_s

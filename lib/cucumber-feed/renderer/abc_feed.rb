@@ -1,8 +1,8 @@
-require 'cucumber-feed/rss'
+require 'cucumber-feed/feed_renderer'
 require 'httparty'
 
 module CucumberFeed
-  class AbcRSS < RSS
+  class AbcFeedRenderer < FeedRenderer
     def channel_title
       return 'ABC毎日放送 プリキュア公式'
     end

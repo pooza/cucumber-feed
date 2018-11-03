@@ -10,7 +10,7 @@ require 'cucumber-feed/slack'
 require 'cucumber-feed/logger'
 
 module CucumberFeed
-  class RSS < Renderer
+  class FeedRenderer < Renderer
     def type
       return 'application/rss+xml; charset=UTF-8'
     end
@@ -70,8 +70,8 @@ module CucumberFeed
     end
 
     def self.create(name)
-      require "cucumber-feed/rss/#{name}"
-      return "CucumberFeed::#{name.capitalize}RSS".constantize.new
+      require "cucumber-feed/renderer/#{name}_feed"
+      return "CucumberFeed::#{name.capitalize}FeedRenderer".constantize.new
     end
 
     def self.all

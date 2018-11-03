@@ -1,10 +1,10 @@
-require 'cucumber-feed/rss'
+require 'cucumber-feed/feed_renderer'
 require 'nokogiri'
 require 'time'
 require 'httparty'
 
 module CucumberFeed
-  class ToeiRSS < RSS
+  class ToeiFeedRenderer < FeedRenderer
     def channel_title
       return '東映アニメーション プリキュア公式'
     end

@@ -1,9 +1,9 @@
-require 'cucumber-feed/rss/toei'
+require 'cucumber-feed/renderer/garden_feed'
 
 module CucumberFeed
-  class ToeiRSSTest < Test::Unit::TestCase
+  class GardenFeedRendererTest < Test::Unit::TestCase
     def setup
-      @rss = ToeiRSS.new
+      @rss = GardenFeedRenderer.new
     end
 
     def test_crawl
