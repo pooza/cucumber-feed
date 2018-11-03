@@ -12,10 +12,16 @@ module CucumberFeed
   autoload :Renderer
   autoload :Server
   autoload :Slack
-  autoload :ConfigError, 'cucumber_feed/error/config'
-  autoload :ExternalServiceError, 'cucumber_feed/error/external_service'
-  autoload :ImprementError, 'cucumber_feed/error/imprement'
-  autoload :NotFoundError, 'cucumber_feed/error/not_found'
-  autoload :RequestError, 'cucumber_feed/error/request'
-  autoload :XmlRenderer, 'cucumber_feed/renderer/xml'
+
+  autoload_under 'error' do
+    autoload :ConfigError
+    autoload :ExternalServiceError
+    autoload :ImprementError
+    autoload :NotFoundError
+    autoload :RequestError
+  end
+
+  autoload_under 'renderer' do
+    autoload :XmlRenderer
+  end
 end

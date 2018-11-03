@@ -82,7 +82,7 @@ module CucumberFeed
     end
 
     def self.create(name)
-      require "cucumber_feed/renderer/#{name}_feed"
+      require "cucumber_feed/renderer/#{name}_feed_renderer"
       return "CucumberFeed::#{name.capitalize}FeedRenderer".constantize.new
     end
 
