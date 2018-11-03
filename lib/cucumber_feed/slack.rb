@@ -1,9 +1,6 @@
 require 'addressable/uri'
 require 'httparty'
 require 'json'
-require 'cucumber-feed/config'
-require 'cucumber-feed/logger'
-require 'cucumber-feed/package'
 
 module CucumberFeed
   class Slack

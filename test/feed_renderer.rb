@@ -1,5 +1,3 @@
-require 'cucumber-feed/feed_renderer'
-
 module CucumberFeed
   class FeedRendererTest < Test::Unit::TestCase
     def test_all

@@ -4,14 +4,6 @@ require 'addressable/uri'
 require 'httparty'
 require 'sanitize'
 require 'json'
-require 'cucumber-feed/package'
-require 'cucumber-feed/renderer'
-require 'cucumber-feed/slack'
-require 'cucumber-feed/logger'
-require 'cucumber-feed/error/request'
-require 'cucumber-feed/error/imprement'
-require 'cucumber-feed/error/not_found'
-require 'cucumber-feed/error/external_service'
 
 module CucumberFeed
   class FeedRenderer < Renderer
@@ -90,7 +82,7 @@ module CucumberFeed
     end
 
     def self.create(name)
-      require "cucumber-feed/renderer/#{name}_feed"
+      require "cucumber_feed/renderer/#{name}_feed"
       return "CucumberFeed::#{name.capitalize}FeedRenderer".constantize.new
     end
 
@@ -101,7 +93,7 @@ module CucumberFeed
       end
     end
 
-    protected
+    private
 
     def headers
       return {

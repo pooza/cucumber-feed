@@ -1,4 +1,3 @@
-require 'cucumber-feed/feed_renderer'
 require 'httparty'
 
 module CucumberFeed
@@ -15,7 +14,7 @@ module CucumberFeed
       return 'https://www.asahi.co.jp/precure/hugtto/js/inc/news.js'
     end
 
-    protected
+    private
 
     def entries
       unless @entries

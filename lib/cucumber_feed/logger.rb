@@ -1,6 +1,5 @@
 require 'json'
 require 'syslog/logger'
-require 'cucumber-feed/package'
 
 module CucumberFeed
   class Logger

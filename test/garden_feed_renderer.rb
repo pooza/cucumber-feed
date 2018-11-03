@@ -1,9 +1,7 @@
-require 'cucumber-feed/renderer/garden_feed'
-
 module CucumberFeed
   class GardenFeedRendererTest < Test::Unit::TestCase
     def setup
-      @renderer = GardenFeedRenderer.new
+      @renderer = FeedRenderer.create('garden')
     end
 
     def test_crawl

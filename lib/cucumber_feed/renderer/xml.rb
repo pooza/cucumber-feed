@@ -1,6 +1,4 @@
 require 'rexml/document'
-require 'cucumber-feed/renderer'
-require 'cucumber-feed/error/request'
 
 module CucumberFeed
   class XMLRenderer < Renderer

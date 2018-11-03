@@ -1,6 +1,3 @@
-require 'cucumber-feed/slack'
-require 'cucumber-feed/package'
-
 module CucumberFeed
   class SlackTest < Test::Unit::TestCase
     def test_all

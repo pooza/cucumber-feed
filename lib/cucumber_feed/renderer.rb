@@ -1,7 +1,3 @@
-require 'cucumber-feed/config'
-require 'cucumber-feed/logger'
-require 'cucumber-feed/error/imprement'
-
 module CucumberFeed
   class Renderer
     attr_accessor :status

@@ -1,5 +1,3 @@
-require 'cucumber-feed/package'
-
 module CucumberFeed
   class PackageTest < Test::Unit::TestCase
     def test_name

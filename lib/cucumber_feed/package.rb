@@ -1,5 +1,3 @@
-require 'cucumber-feed/config'
-
 module CucumberFeed
   module Package
     def self.name

@@ -1,13 +1,4 @@
 require 'sinatra'
-require 'active_support'
-require 'active_support/core_ext'
-require 'cucumber-feed/slack'
-require 'cucumber-feed/config'
-require 'cucumber-feed/renderer/xml'
-require 'cucumber-feed/feed_renderer'
-require 'cucumber-feed/package'
-require 'cucumber-feed/logger'
-require 'cucumber-feed/error/not_found'
 
 module CucumberFeed
   class Server < Sinatra::Base

@@ -1,4 +1,3 @@
-require 'cucumber-feed/feed_renderer'
 require 'nokogiri'
 require 'time'
 require 'httparty'
@@ -13,7 +12,7 @@ module CucumberFeed
       return 'http://www.toei-anim.co.jp/tv/precure/'
     end
 
-    protected
+    private
 
     def source
       @source ||= Nokogiri::HTML.parse(

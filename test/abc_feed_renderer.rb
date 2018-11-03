@@ -1,9 +1,7 @@
-require 'cucumber-feed/renderer/abc_feed'
-
 module CucumberFeed
   class AbcFeedRendererTest < Test::Unit::TestCase
     def setup
-      @renderer = AbcFeedRenderer.new
+      @renderer = FeedRenderer.create('abc')
     end
 
     def test_crawl

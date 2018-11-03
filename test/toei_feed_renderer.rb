@@ -1,9 +1,7 @@
-require 'cucumber-feed/renderer/toei_feed'
-
 module CucumberFeed
   class ToeiFeedRendererTest < Test::Unit::TestCase
     def setup
-      @renderer = ToeiFeedRenderer.new
+      @renderer = FeedRenderer.create('toei')
     end
 
     def test_crawl

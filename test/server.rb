@@ -1,4 +1,3 @@
-require 'cucumber-feed/config'
 require 'addressable/uri'
 require 'httparty'
 
