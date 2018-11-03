@@ -8,6 +8,10 @@ require 'cucumber-feed/package'
 require 'cucumber-feed/renderer'
 require 'cucumber-feed/slack'
 require 'cucumber-feed/logger'
+require 'cucumber-feed/error/request'
+require 'cucumber-feed/error/imprement'
+require 'cucumber-feed/error/not_found'
+require 'cucumber-feed/error/external_service'
 
 module CucumberFeed
   class FeedRenderer < Renderer
@@ -19,7 +23,7 @@ module CucumberFeed
         name = 'application/atom+xml; charset=UTF-8'
       else
         name ||= '(nil)'
-        raise "Invalid type '#{name}'"
+        raise RequestError, "Invalid type '#{name}'"
       end
       @type = name
     end
@@ -29,7 +33,7 @@ module CucumberFeed
     end
 
     def channel_title
-      raise 'チャンネルタイトルが未定義です。'
+      raise ImprementError, "#{__method__}が未定義です。"
     end
 
     def description
@@ -37,7 +41,7 @@ module CucumberFeed
     end
 
     def url
-      raise 'フィードのURLが未定義です。'
+      raise ImprementError, "#{__method__}が未定義です。"
     end
 
     def source_url
@@ -56,7 +60,7 @@ module CucumberFeed
       }
       @logger.error(message)
       Slack.broadcast(message)
-      raise 'Feed not cached.' unless File.exist?(cache_path(type))
+      raise NotFoundError, 'Cache not found.' unless File.exist?(cache_path(type))
       return File.read(cache_path(type))
     end
 
@@ -68,7 +72,7 @@ module CucumberFeed
         File.write(path, feed(type).to_s)
         message[type] = path
       end
-      raise 'Error: fetching entries' if contents_updated? && !entries_updated?
+      raise ExternalServiceError, 'Invalid contents' if contents_updated? && !entries_updated?
       @logger.info(message)
       return message
     rescue => e
@@ -103,13 +107,11 @@ module CucumberFeed
     end
 
     def entries
-      raise 'entriesが未実装です。'
+      raise ImprementError, "#{__method__}が未定義です。"
     end
 
     def feed(type)
-      type = type.to_s
-      type = '2.0' if type == 'rss'
-      return ::RSS::Maker.make(type) do |maker|
+      return ::RSS::Maker.make(create_feed_type(type)) do |maker|
         update_channel(maker.channel)
         maker.items.do_sort = true
         entries.each do |entry|
@@ -182,6 +184,11 @@ module CucumberFeed
 
     def entries_updated?
       return (digest[:entries] != prev_digest[:entries])
+    end
+
+    def create_feed_type(type)
+      return '2.0' if type.to_s == 'rss'
+      return type.to_s
     end
 
     def create_extension(type)

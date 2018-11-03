@@ -1,5 +1,6 @@
 require 'cucumber-feed/config'
 require 'cucumber-feed/logger'
+require 'cucumber-feed/error/imprement'
 
 module CucumberFeed
   class Renderer
@@ -16,7 +17,7 @@ module CucumberFeed
     end
 
     def to_s
-      raise 'to_sが未定義です。'
+      raise ImprementError, "#{__method__}が未定義です。"
     end
   end
 end
