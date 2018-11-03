@@ -7,6 +7,7 @@ require 'cucumber-feed/renderer/xml'
 require 'cucumber-feed/feed_renderer'
 require 'cucumber-feed/package'
 require 'cucumber-feed/logger'
+require 'cucumber-feed/error/not_found'
 
 module CucumberFeed
   class Server < Sinatra::Base
@@ -50,11 +51,7 @@ module CucumberFeed
         @renderer.type = type
         return @renderer.to_s
       rescue ::LoadError
-        @renderer = XMLRenderer.new
-        @renderer.status = 404
-        @message[:response][:message] = "Resource #{@message[:request][:path]} not found."
-        @renderer.message = @message
-        return @renderer.to_s
+        raise NotFoundError, "Resource #{@message[:request][:path]} not found."
       end
     end
 

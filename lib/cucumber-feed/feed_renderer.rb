@@ -17,7 +17,7 @@ module CucumberFeed
   class FeedRenderer < Renderer
     def initialize
       super
-      type = 'rss'
+      self.type = 'rss'
     end
 
     def type=(name)
