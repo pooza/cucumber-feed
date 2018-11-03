@@ -21,7 +21,7 @@ module CucumberFeed
         },
         ssl_ca_file: ENV['SSL_CERT_FILE'],
       })
-      if message.class.is_a?(Exception)
+      if message.class.is_a?(::StandardError)
         @logger.error(message)
       else
         @logger.info(message)

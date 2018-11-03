@@ -4,7 +4,7 @@ require 'cucumber-feed/package'
 require 'cucumber-feed/error/config'
 
 module CucumberFeed
-  class Config < Hash
+  class Config < ::Hash
     include Singleton
 
     def initialize
