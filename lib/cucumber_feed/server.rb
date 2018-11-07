@@ -9,6 +9,7 @@ module CucumberFeed
       @logger.info({
         message: 'starting...',
         server: {port: @config['thin']['port']},
+        version: Package.version,
       })
     end
 
