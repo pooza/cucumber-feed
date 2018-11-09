@@ -36,15 +36,13 @@ module CucumberFeed
     end
 
     get '/feed/v1.0/site/:name' do
-      begin
-        site, type = params[:name].split('.')
-        type ||= 'rss'
-        @renderer = FeedRenderer.create(site)
-        @renderer.type = type
-        return @renderer.to_s
-      rescue LoadError
-        raise NotFoundError, "Resource #{@message[:request][:path]} not found."
-      end
+      site, type = params[:name].split('.')
+      type ||= 'rss'
+      @renderer = FeedRenderer.create(site)
+      @renderer.type = type
+      return @renderer.to_s
+    rescue LoadError
+      raise NotFoundError, "Resource #{@message[:request][:path]} not found."
     end
 
     not_found do
