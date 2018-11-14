@@ -6,6 +6,7 @@ module CucumberFeed
   extend ActiveSupport::Autoload
 
   autoload :Config
+  autoload :FeedRenderer
   autoload :Logger
   autoload :Package
   autoload :Renderer
@@ -21,7 +22,6 @@ module CucumberFeed
   end
 
   autoload_under 'renderer' do
-    autoload :FeedRenderer
     autoload :XmlRenderer
   end
 end
