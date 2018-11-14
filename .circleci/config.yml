@@ -10,5 +10,8 @@ jobs:
           name: install dependencies
           command: bundle install
       - run:
+          name: run text
+          command: bundle exec rake test
+      - run:
           name: run RuboCop
           command: bundle exec rubocop
