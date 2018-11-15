@@ -47,14 +47,11 @@ module CucumberFeed
       crawl unless exist?
       return File.read(cache_path(type))
     rescue => e
-      message = {
-        feed: self.class.name,
-        exception: e.class,
-        message: e.message,
-        backtrace: e.backtrace[0..5],
-      }
-      @logger.error(message)
+      e = Error.create(e)
+      message = e.to_h
+      message[:feed] = self.class.name
       Slack.broadcast(message)
+      @logger.error(message)
       raise NotFoundError, 'Cache not found.' unless File.exist?(cache_path(type))
       return File.read(cache_path(type))
     end
@@ -71,14 +68,11 @@ module CucumberFeed
       @logger.info(message)
       return message
     rescue => e
-      message = {
-        feed: self.class.name,
-        exception: e.class,
-        message: e.message,
-        backtrace: e.backtrace[0..5],
-      }
-      @logger.error(message)
+      e = Error.create(e)
+      message = e.to_h
+      message[:feed] = self.class.name
       Slack.broadcast(message)
+      @logger.error(message)
     end
 
     def self.create(name)
@@ -139,8 +133,8 @@ module CucumberFeed
     def handle_blank_title(entry)
       message = {feed: self.class.name, message: 'Blank title'}
       message.update(entry)
-      @logger.error(message)
       Slack.broadcast(message)
+      @logger.error(message)
     end
 
     def parse_url(href)

@@ -6,6 +6,7 @@ module CucumberFeed
   extend ActiveSupport::Autoload
 
   autoload :Config
+  autoload :Error
   autoload :FeedRenderer
   autoload :Logger
   autoload :Package
