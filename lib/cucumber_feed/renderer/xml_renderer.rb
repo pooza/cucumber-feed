@@ -1,7 +1,7 @@
 require 'rexml/document'
 
 module CucumberFeed
-  class XmlRenderer < Renderer
+  class XMLRenderer < Renderer
     attr_accessor :message
 
     def to_s
@@ -11,7 +11,7 @@ module CucumberFeed
     private
 
     def xml
-      raise RequestError, 'メッセージが未定義です。' unless @message
+      raise RequestError, 'Invalid message' unless @message
       xml = REXML::Document.new
       xml.add(REXML::XMLDecl.new('1.0', 'UTF-8'))
       xml.add_element(REXML::Element.new('result'))

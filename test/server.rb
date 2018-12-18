@@ -8,7 +8,7 @@ module CucumberFeed
     end
 
     def test_get
-      @config['application']['feeds'].each do |key|
+      @config['/feeds'].each do |key|
         ['.rss', '.atom', ''].each do |suffix|
           response = HTTParty.get(create_url("/feed/v1.0/site/#{key}#{suffix}"))
           assert_equal(response.code, 200)
@@ -24,7 +24,8 @@ module CucumberFeed
     private
 
     def create_url(href)
-      url = Addressable::URI.parse("http://localhost:#{@config['thin']['port']}")
+      url = Addressable::URI.parse('http://localhost')
+      url.port = @config['/thin/port'].to_i
       url.path = href
       return url
     end

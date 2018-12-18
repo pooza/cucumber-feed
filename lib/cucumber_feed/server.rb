@@ -8,7 +8,7 @@ module CucumberFeed
       @logger = Logger.new
       @logger.info({
         message: 'starting...',
-        server: {port: @config['thin']['port']},
+        server: {port: @config['/thin/port']},
         version: Package.version,
       })
     end
@@ -16,7 +16,7 @@ module CucumberFeed
     before do
       @logger.info({request: {path: request.path, params: params}})
       @headers = request.env.select{ |k, v| k.start_with?('HTTP_')}
-      @renderer = XmlRenderer.new
+      @renderer = XMLRenderer.new
     end
 
     after do
@@ -40,7 +40,7 @@ module CucumberFeed
     end
 
     not_found do
-      @renderer = XmlRenderer.new
+      @renderer = XMLRenderer.new
       @renderer.status = 404
       @renderer.message = "Resource #{request.path} not found."
       return @renderer.to_s
@@ -48,7 +48,7 @@ module CucumberFeed
 
     error do |e|
       e = Error.create(e)
-      @renderer = XmlRenderer.new
+      @renderer = XMLRenderer.new
       @renderer.status = e.status
       @renderer.message = "#{e.class}: #{e.message}"
       Slack.broadcast(e.to_h)
