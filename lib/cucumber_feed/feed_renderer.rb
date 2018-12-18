@@ -28,7 +28,7 @@ module CucumberFeed
     end
 
     def channel_title
-      raise ImprementError, "#{__method__}が未定義です。"
+      raise ImplementError, "'#{__method__}' not implemented"
     end
 
     def description
@@ -36,7 +36,7 @@ module CucumberFeed
     end
 
     def url
-      raise ImprementError, "#{__method__}が未定義です。"
+      raise ImplementError, "'#{__method__}' not implemented"
     end
 
     def source_url
@@ -82,7 +82,7 @@ module CucumberFeed
 
     def self.all
       return enum_for(__method__) unless block_given?
-      Config.instance['application']['feeds'].each do |name|
+      Config.instance['/feeds'].each do |name|
         yield create(name)
       end
     end
@@ -96,7 +96,7 @@ module CucumberFeed
     end
 
     def entries
-      raise ImprementError, "#{__method__}が未定義です。"
+      raise ImplementError, "'#{__method__}' not implemented"
     end
 
     def feed(type)
@@ -111,7 +111,9 @@ module CucumberFeed
             item.date = entry[:date]
             next unless entry[:image]
             url = parse_url(entry[:image])
-            response = HTTParty.get(url)
+            response = HTTParty.get(url, {
+              headers: {'User-Agent' => Package.user_agent},
+            })
             item.enclosure.url = url.to_s
             item.enclosure.length = response.body.length
             item.enclosure.type = response.headers['Content-Type']
@@ -125,7 +127,7 @@ module CucumberFeed
       channel.title = channel_title
       channel.description = description
       channel.link = url
-      channel.author = @config['local']['author']
+      channel.author = @config['/author']
       channel.date = Time.now
       channel.generator = Package.user_agent
     end
@@ -150,9 +152,7 @@ module CucumberFeed
     end
 
     def contents
-      @contents ||= HTTParty.get(url, {
-        headers: headers,
-      }).to_s
+      @contents ||= HTTParty.get(url, {headers: headers}).to_s
       return @contents
     end
 
