@@ -1,8 +1,8 @@
 package:
-  version: 1.2.4
+  version: 1.2.5
   url: https://github.com/pooza/cucumber-feed
 feeds:
   - abc
   - garden
   - toei
-author: pooza@b-shock.org
+  - toei_startwinkle
