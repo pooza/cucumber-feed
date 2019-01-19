@@ -1,5 +1,21 @@
 module CucumberFeed
   module Package
+    def environment_class
+      return 'CucumberFeed::Environment'
+    end
+
+    def package_class
+      return 'CucumberFeed::Package'
+    end
+
+    def config_class
+      return 'CucumberFeed::Config'
+    end
+
+    def logger_class
+      return 'CucumberFeed::Logger'
+    end
+
     def self.name
       return 'cucumber-feed'
     end

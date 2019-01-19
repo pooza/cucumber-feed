@@ -6,7 +6,9 @@ require 'sanitize'
 require 'json'
 
 module CucumberFeed
-  class FeedRenderer < Renderer
+  class FeedRenderer < Ginseng::Renderer
+    include Package
+
     def initialize
       super
       self.type = 'rss'
@@ -19,7 +21,7 @@ module CucumberFeed
       when 'atom'
         @type = 'application/atom+xml; charset=UTF-8'
       else
-        raise RequestError, "Invalid type '#{name || '(nil)'}'"
+        raise Ginseng::RequestError, "Invalid type '#{name || '(nil)'}'"
       end
     end
 
@@ -28,7 +30,7 @@ module CucumberFeed
     end
 
     def channel_title
-      raise ImplementError, "'#{__method__}' not implemented"
+      raise Ginseng::ImplementError, "'#{__method__}' not implemented"
     end
 
     def description
@@ -36,7 +38,7 @@ module CucumberFeed
     end
 
     def url
-      raise ImplementError, "'#{__method__}' not implemented"
+      raise Ginseng::ImplementError, "'#{__method__}' not implemented"
     end
 
     def source_url
@@ -47,12 +49,12 @@ module CucumberFeed
       crawl unless exist?
       return File.read(cache_path(type))
     rescue => e
-      e = Error.create(e)
+      e = Ginseng::Error.create(e)
       message = e.to_h
       message[:feed] = self.class.name
       Slack.broadcast(message)
       @logger.error(message)
-      raise NotFoundError, 'Cache not found.' unless File.exist?(cache_path(type))
+      raise Ginseng::NotFoundError, 'Cache not found.' unless File.exist?(cache_path(type))
       return File.read(cache_path(type))
     end
 
@@ -64,11 +66,11 @@ module CucumberFeed
         File.write(path, feed(type).to_s)
         message[type] = path
       end
-      raise ExternalServiceError, 'Invalid contents' if contents_updated? && !entries_updated?
+      raise Ginseng::GatewayError, 'Invalid contents' if contents_updated? && !entries_updated?
       @logger.info(message)
       return message
     rescue => e
-      e = Error.create(e)
+      e = Ginseng::Error.create(e)
       message = e.to_h
       message[:feed] = self.class.name
       Slack.broadcast(message)
@@ -96,7 +98,7 @@ module CucumberFeed
     end
 
     def entries
-      raise ImplementError, "'#{__method__}' not implemented"
+      raise Ginseng::ImplementError, "'#{__method__}' not implemented"
     end
 
     def feed(type)
@@ -193,7 +195,7 @@ module CucumberFeed
 
     def cache_path(type)
       return File.join(
-        ROOT_DIR,
+        Environment.dir,
         'tmp/caches',
         Digest::SHA1.hexdigest(self.class.name) + create_extension(type),
       )
@@ -201,7 +203,7 @@ module CucumberFeed
 
     def digest_path
       return File.join(
-        ROOT_DIR,
+        Environment.dir,
         'tmp/digests',
         Digest::SHA1.hexdigest(self.class.name) + '.sha1',
       )
