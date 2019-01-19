@@ -1,33 +1,6 @@
-require 'sinatra'
-
 module CucumberFeed
-  class Server < Sinatra::Base
-    def initialize
-      super
-      @config = Config.instance
-      @logger = Logger.new
-      @logger.info({
-        message: 'starting...',
-        server: {port: @config['/thin/port']},
-        version: Package.version,
-      })
-    end
-
-    before do
-      @logger.info({request: {path: request.path, params: params}})
-      @headers = request.env.select{ |k, v| k.start_with?('HTTP_')}
-      @renderer = XMLRenderer.new
-    end
-
-    after do
-      status @renderer.status
-      content_type @renderer.type
-    end
-
-    get '/about' do
-      @renderer.message = Package.full_name
-      return @renderer.to_s
-    end
+  class Server < Ginseng::Sinatra
+    include Package
 
     get '/feed/v1.0/site/:name' do
       site, type = params[:name].split('.')
@@ -36,19 +9,23 @@ module CucumberFeed
       @renderer.type = type
       return @renderer.to_s
     rescue LoadError
-      raise NotFoundError, "Resource #{request.path} not found."
+      raise Ginseng::NotFoundError, "Resource #{request.path} not found."
+    end
+
+    def default_renderer_class
+      return 'Ginseng::XMLRenderer'
     end
 
     not_found do
-      @renderer = XMLRenderer.new
+      @renderer = Ginseng::XMLRenderer.new
       @renderer.status = 404
       @renderer.message = "Resource #{request.path} not found."
       return @renderer.to_s
     end
 
     error do |e|
-      e = Error.create(e)
-      @renderer = XMLRenderer.new
+      e = Ginseng::Error.create(e)
+      @renderer = Ginseng::XMLRenderer.new
       @renderer.status = e.status
       @renderer.message = "#{e.class}: #{e.message}"
       Slack.broadcast(e.to_h)
