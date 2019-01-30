@@ -11,20 +11,29 @@ module CucumberFeed
     end
 
     def source_url
-      return 'https://www.asahi.co.jp/precure/hugtto/js/inc/news.js'
+      return 'https://www.asahi.co.jp/precure/twinkle/news/'
     end
 
     private
 
+    def source
+      @source ||= Nokogiri::HTML.parse(
+        HTTParty.get(source_url, {headers: headers}).to_s.force_encoding('utf-8'),
+        nil,
+        'utf-8',
+      )
+      return @source
+    end
+
     def entries
       unless @entries
         @entries = []
-        pattern = %r{\<li.*?\>.*?\<dt\>(.*?)\</dt\>.*?href=\"(.*?)\".*?\>(.*?)\</a\>.*?\</li\>}m
-        HTTParty.get(source_url, {headers: headers}).to_s.scan(pattern).each do |matches|
+        source.xpath('//ul[@class="listbox"]//a').each do |node|
           @entries.push({
-            date: Time.parse(matches[0]),
-            title: sanitize(matches[2].force_encoding('utf-8')),
-            link: parse_url(matches[1]).to_s,
+            link: parse_url(node.attribute('href')).to_s,
+            title: node.search('p').inner_text.gsub(/\s+/, ' ').strip,
+            date: Time.parse(node.search('dt').inner_text),
+            image: node.search('img').attribute('src').value,
           })
         end
       end
