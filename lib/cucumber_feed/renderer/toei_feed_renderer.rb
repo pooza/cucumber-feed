@@ -9,7 +9,7 @@ module CucumberFeed
     end
 
     def url
-      return 'http://www.toei-anim.co.jp/tv/precure/news/'
+      return 'http://www.toei-anim.co.jp/tv/precure/'
     end
 
     private
@@ -26,7 +26,7 @@ module CucumberFeed
     def entries
       unless @entries
         @entries = []
-        source.xpath('//div[@class="m-list-news"]//a').each do |node|
+        source.xpath('//div[@class="u-list-news"]//a').each do |node|
           @entries.push({
             link: parse_url(node.attribute('href')).to_s,
             title: node.search('p').inner_text.gsub(/\s+/, ' ').strip,
