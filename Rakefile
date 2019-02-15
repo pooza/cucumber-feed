@@ -6,7 +6,7 @@ ENV['SSL_CERT_FILE'] ||= File.join(dir, 'cert/cacert.pem')
 require 'bundler/setup'
 require 'cucumber_feed'
 
-environment= CucumberFeed::Environment
+environment = CucumberFeed::Environment
 
 desc 'test'
 task :test do
