@@ -12,10 +12,6 @@ module CucumberFeed
       raise Ginseng::NotFoundError, "Resource #{request.path} not found."
     end
 
-    def default_renderer_class
-      return 'Ginseng::XMLRenderer'
-    end
-
     not_found do
       @renderer = Ginseng::XMLRenderer.new
       @renderer.status = 404
@@ -28,7 +24,7 @@ module CucumberFeed
       @renderer = Ginseng::XMLRenderer.new
       @renderer.status = e.status
       @renderer.message = "#{e.class}: #{e.message}"
-      Slack.broadcast(e.to_h)
+      Slack.broadcast(e.to_h) unless e.status == 404
       @logger.error(e.to_h)
       return @renderer.to_s
     end

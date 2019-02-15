@@ -13,4 +13,8 @@ module CucumberFeed
   autoload :Package
   autoload :Server
   autoload :Slack
+
+  autoload_under 'daemon' do
+    autoload :ThinDaemon
+  end
 end

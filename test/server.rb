@@ -1,24 +1,35 @@
 require 'addressable/uri'
-require 'httparty'
+require 'rack/test'
 
 module CucumberFeed
   class ServerTest < Test::Unit::TestCase
+    include ::Rack::Test::Methods
+
     def setup
       @config = Config.instance
+    end
+
+    def app
+      return Server
     end
 
     def test_get
       @config['/feeds'].each do |key|
         ['.rss', '.atom', ''].each do |suffix|
-          response = HTTParty.get(create_url("/feed/v1.0/site/#{key}#{suffix}"))
-          assert_equal(response.code, 200)
-          assert_true(response.to_s.present?)
-          assert_equal(response.headers['content-type'], types[suffix])
+          get create_url("/feed/v1.0/site/#{key}#{suffix}").to_s
+          assert(last_response.ok?)
+          assert_equal(last_response.headers['content-type'], types[suffix])
         end
       end
-      assert_equal(HTTParty.get(create_url('/error')).code, 404)
-      assert_equal(HTTParty.get(create_url('/feed/v1.0/site/abc1')).code, 404)
-      assert_equal(HTTParty.get(create_url('/feed/v1.0/site/abc.rss2')).code, 400)
+
+      get create_url('/error').to_s
+      assert_false(last_response.ok?)
+
+      get create_url('/feed/v1.0/site/abc1').to_s
+      assert_false(last_response.ok?)
+
+      get create_url('/feed/v1.0/site/abc.rss2').to_s
+      assert_false(last_response.ok?)
     end
 
     private
