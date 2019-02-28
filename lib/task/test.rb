@@ -1,5 +1,4 @@
 namespace :cucumber do
-  desc 'test cucumber'
   task :test do
     ENV['TEST'] = CucumberFeed::Package.name
     require 'test/unit'
