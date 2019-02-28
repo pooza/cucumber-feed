@@ -15,7 +15,7 @@ task test: ['cucumber:test']
   task action => "cucumber:thin:#{action}"
 end
 
-['Ginseng', 'CucumberFeed'].each do |prefix|
+['Ginseng', ENV['RAKE_MODULE']].each do |prefix|
   Dir.glob(File.join("#{prefix}::Environment".constantize.dir, 'lib/task/*.rb')).each do |f|
     require f
   end
