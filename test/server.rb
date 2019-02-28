@@ -24,6 +24,7 @@ module CucumberFeed
 
       get create_url('/error').to_s
       assert_false(last_response.ok?)
+      assert_equal(last_response.status, 404)
 
       get create_url('/feed/v1.0/site/abc1').to_s
       assert_false(last_response.ok?)
