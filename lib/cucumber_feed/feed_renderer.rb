@@ -1,7 +1,6 @@
 require 'rss'
 require 'digest/sha1'
 require 'addressable/uri'
-require 'httparty'
 require 'sanitize'
 require 'json'
 
@@ -11,6 +10,7 @@ module CucumberFeed
 
     def initialize
       super
+      @http = HTTP.new
       self.type = 'rss'
     end
 
@@ -91,12 +91,6 @@ module CucumberFeed
 
     private
 
-    def headers
-      return {
-        'User-Agent' => Package.user_agent,
-      }
-    end
-
     def entries
       raise Ginseng::ImplementError, "'#{__method__}' not implemented"
     end
@@ -113,9 +107,7 @@ module CucumberFeed
             item.date = entry[:date]
             next unless entry[:image]
             url = parse_url(entry[:image])
-            response = HTTParty.get(url, {
-              headers: {'User-Agent' => Package.user_agent},
-            })
+            response = @http.get(url)
             item.enclosure.url = url.to_s
             item.enclosure.length = response.body.length
             item.enclosure.type = response.headers['Content-Type']
@@ -154,7 +146,7 @@ module CucumberFeed
     end
 
     def contents
-      @contents ||= HTTParty.get(url, {headers: headers}).to_s
+      @contents ||= @http.get(url).to_s
       return @contents
     end
 

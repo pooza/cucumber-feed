@@ -1,5 +1,4 @@
 require 'time'
-require 'httparty'
 require 'json'
 
 module CucumberFeed
@@ -21,7 +20,7 @@ module CucumberFeed
     def entries
       unless @entries
         @entries = []
-        contents = HTTParty.get(source_url, {headers: headers})
+        contents = @http.get(source_url)
         JSON.parse(contents.match(/"entry":\s*(\[.*?\])/m)[1]).each do |entry|
           @entries.push({
             link: entry['link'],

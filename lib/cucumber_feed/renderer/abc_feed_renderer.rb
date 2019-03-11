@@ -1,5 +1,3 @@
-require 'httparty'
-
 module CucumberFeed
   class AbcFeedRenderer < FeedRenderer
     def channel_title
@@ -18,7 +16,7 @@ module CucumberFeed
 
     def source
       @source ||= Nokogiri::HTML.parse(
-        HTTParty.get(source_url, {headers: headers}).to_s.force_encoding('utf-8'),
+        @http.get(source_url).to_s.force_encoding('utf-8'),
         nil,
         'utf-8',
       )
