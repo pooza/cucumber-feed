@@ -16,6 +16,10 @@ module CucumberFeed
       return 'CucumberFeed::Logger'
     end
 
+    def http_class
+      return 'CucumberFeed::HTTP'
+    end
+
     def self.name
       return 'cucumber-feed'
     end

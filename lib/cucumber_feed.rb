@@ -9,6 +9,7 @@ module CucumberFeed
   autoload :Config
   autoload :Environment
   autoload :FeedRenderer
+  autoload :HTTP
   autoload :Logger
   autoload :Package
   autoload :Server
