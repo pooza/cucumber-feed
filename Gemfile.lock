@@ -112,9 +112,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  addressable
   ginseng-core!
-  httparty
   nokogiri
   rubocop
   sanitize
