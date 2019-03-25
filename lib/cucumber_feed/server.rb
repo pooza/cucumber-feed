@@ -28,5 +28,11 @@ module CucumberFeed
       @logger.error(e.to_h)
       return @renderer.to_s
     end
+
+    private
+
+    def default_renderer_class
+      return 'Ginseng::XMLRenderer'
+    end
   end
 end
