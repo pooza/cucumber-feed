@@ -1,23 +1,27 @@
 module CucumberFeed
   module Package
+    def module_name
+      return 'CucumberFeed'
+    end
+
     def environment_class
-      return 'CucumberFeed::Environment'
+      return "CucumberFeed::Environment".constantize
     end
 
     def package_class
-      return 'CucumberFeed::Package'
+      return "CucumberFeed::Package".constantize
     end
 
     def config_class
-      return 'CucumberFeed::Config'
+      return "CucumberFeed::Config".constantize
     end
 
     def logger_class
-      return 'CucumberFeed::Logger'
+      return "CucumberFeed::Logger".constantize
     end
 
     def http_class
-      return 'CucumberFeed::HTTP'
+      return "CucumberFeed::HTTP".constantize
     end
 
     def self.name
