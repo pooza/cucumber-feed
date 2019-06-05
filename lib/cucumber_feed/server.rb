@@ -1,5 +1,5 @@
 module CucumberFeed
-  class Server < Ginseng::Sinatra
+  class Server < Ginseng::Web::Sinatra
     include Package
 
     get '/feed/v1.0/site/:name' do
@@ -9,30 +9,21 @@ module CucumberFeed
       @renderer.type = type
       return @renderer.to_s
     rescue LoadError
-      raise Ginseng::NotFoundError, "Resource #{request.path} not found."
-    end
-
-    not_found do
-      @renderer = Ginseng::XMLRenderer.new
+      @renderer = Ginseng::Web::XMLRenderer.new
       @renderer.status = 404
       @renderer.message = "Resource #{request.path} not found."
       return @renderer.to_s
-    end
-
-    error do |e|
-      e = Ginseng::Error.create(e)
-      @renderer = Ginseng::XMLRenderer.new
+    rescue => e
+      @renderer = Ginseng::Web::XMLRenderer.new
       @renderer.status = e.status
-      @renderer.message = "#{e.class}: #{e.message}"
-      Slack.broadcast(e.to_h) unless e.status == 404
-      @logger.error(e.to_h)
+      @renderer.message = e.message
       return @renderer.to_s
     end
 
     private
 
     def default_renderer_class
-      return 'Ginseng::XMLRenderer'
+      return 'Ginseng::Web::XMLRenderer'.constantize
     end
   end
 end

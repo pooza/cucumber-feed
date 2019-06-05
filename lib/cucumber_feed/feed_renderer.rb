@@ -5,7 +5,7 @@ require 'sanitize'
 require 'json'
 
 module CucumberFeed
-  class FeedRenderer < Ginseng::Renderer
+  class FeedRenderer < Ginseng::Web::Renderer
     include Package
 
     def initialize
