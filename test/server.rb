@@ -1,4 +1,3 @@
-require 'addressable/uri'
 require 'rack/test'
 
 module CucumberFeed
@@ -43,7 +42,7 @@ module CucumberFeed
     private
 
     def create_url(href)
-      url = Addressable::URI.parse('http://localhost')
+      url = Ginseng::URI.parse('http://localhost')
       url.port = @config['/thin/port'].to_i
       url.path = href
       return url
