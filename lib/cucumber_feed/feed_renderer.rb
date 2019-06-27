@@ -1,6 +1,6 @@
 require 'rss'
 require 'digest/sha1'
-equire 'sanitize'
+require 'sanitize'
 require 'json'
 
 module CucumberFeed
