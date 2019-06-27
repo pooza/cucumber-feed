@@ -1,11 +1,10 @@
 require 'rss'
 require 'digest/sha1'
-require 'addressable/uri'
 require 'sanitize'
 require 'json'
 
 module CucumberFeed
-  class FeedRenderer < Ginseng::Renderer
+  class FeedRenderer < Ginseng::Web::Renderer
     include Package
 
     def initialize
@@ -134,10 +133,10 @@ module CucumberFeed
     end
 
     def parse_url(href)
-      url = Addressable::URI.parse(href)
+      url = Ginseng::URI.parse(href)
       unless url.absolute?
         local_url = url
-        url = Addressable::URI.parse(self.url)
+        url = Ginseng::URI.parse(self.url)
         url.path = local_url.path
         url.query = local_url.query
         url.fragment = local_url.fragment

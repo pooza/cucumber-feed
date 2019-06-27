@@ -2,6 +2,7 @@ require 'active_support'
 require 'active_support/core_ext'
 require 'active_support/dependencies/autoload'
 require 'ginseng'
+require 'ginseng/web'
 
 module CucumberFeed
   extend ActiveSupport::Autoload
