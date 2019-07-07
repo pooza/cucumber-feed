@@ -2,6 +2,9 @@ module CucumberFeed
   class GardenFeedRendererTest < Test::Unit::TestCase
     def setup
       @renderer = FeedRenderer.create('garden')
+      return if Environment.ci?
+      @config = Config.instance
+      @config['/slack/hooks'] = []
     end
 
     def test_crawl

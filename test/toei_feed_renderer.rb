@@ -2,6 +2,9 @@ module CucumberFeed
   class ToeiFeedRendererTest < Test::Unit::TestCase
     def setup
       @renderer = FeedRenderer.create('toei')
+      return if Environment.ci?
+      @config = Config.instance
+      @config['/slack/hooks'] = []
     end
 
     def test_crawl
