@@ -5,9 +5,6 @@ ENV['BUNDLE_GEMFILE'] ||= File.join(dir, 'Gemfile')
 require 'bundler/setup'
 require 'cucumber_feed'
 
-desc 'test all'
-task test: ['cucumber:test']
-
 [:start, :stop, :restart].each do |action|
   desc "#{action} all"
   task action => "cucumber:thin:#{action}"
