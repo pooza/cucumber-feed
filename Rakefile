@@ -10,6 +10,11 @@ require 'cucumber_feed'
   task action => "cucumber:thin:#{action}"
 end
 
+[:crawl, :run].each do |action|
+  desc "alias of cucumber:#{action}"
+  task action => "cucumber:#{action}"
+end
+
 Dir.glob(File.join(CucumberFeed::Environment.dir, 'lib/task/*.rb')).each do |f|
   require f
 end
