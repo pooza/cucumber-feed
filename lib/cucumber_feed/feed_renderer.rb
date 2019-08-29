@@ -1,7 +1,6 @@
 require 'rss'
 require 'digest/sha1'
 require 'sanitize'
-require 'json'
 
 module CucumberFeed
   class FeedRenderer < Ginseng::Web::Renderer
