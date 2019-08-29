@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/pooza/ginseng-core.git
-  revision: bca4d2c45bb900838a8cb087ba3b9d40328bc9f9
+  revision: d68e5450bc2e527ee923fb3a0008485c7f55f80a
   specs:
-    ginseng-core (1.4.5)
+    ginseng-core (1.4.7)
       activesupport
       addressable
       bundler
@@ -14,12 +14,13 @@ GIT
       rubocop
       syslog-logger
       test-unit
+      yajl-ruby
 
 GIT
   remote: https://github.com/pooza/ginseng-web.git
-  revision: 6da93bdba6f46b2d0e16de298b6a1d4abb16e234
+  revision: c51c66e908e61262e48414dae8f980427e46472b
   specs:
-    ginseng-web (1.0.3)
+    ginseng-web (1.0.5)
       rack-test
       sass
       sinatra
@@ -46,6 +47,7 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     eventmachine (1.2.7)
     ffi (1.11.1)
+    http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     httparty (0.17.0)
@@ -72,7 +74,7 @@ GEM
     power_assert (1.1.5)
     public_suffix (3.1.1)
     rack (2.0.7)
-    rack-protection (2.0.5)
+    rack-protection (2.0.7)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -81,7 +83,8 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
-    rest-client (2.0.2)
+    rest-client (2.1.0)
+      http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
@@ -102,10 +105,10 @@ GEM
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    sinatra (2.0.5)
+    sinatra (2.0.7)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.5)
+      rack-protection (= 2.0.7)
       tilt (~> 2.0)
     syslog-logger (1.6.8)
     test-unit (3.3.3)
@@ -122,6 +125,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.6)
     unicode-display_width (1.6.0)
+    yajl-ruby (1.4.1)
     zeitwerk (2.1.9)
 
 PLATFORMS
