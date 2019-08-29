@@ -1,5 +1,4 @@
 require 'time'
-require 'json'
 
 module CucumberFeed
   class StarTwincleMovieFeedRenderer < FeedRenderer
