@@ -1,0 +1,4 @@
+inflections:
+  http: HTTP
+dirs:
+  - renderer

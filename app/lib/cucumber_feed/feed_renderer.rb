@@ -76,7 +76,6 @@ module CucumberFeed
     end
 
     def self.create(name)
-      require "cucumber_feed/renderer/#{name}_feed_renderer"
       return "CucumberFeed::#{name.classify}FeedRenderer".constantize.new
     end
 
