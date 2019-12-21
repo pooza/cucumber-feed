@@ -5,7 +5,7 @@ module CucumberFeed
     end
 
     def self.dir
-      return File.expand_path('../..', __dir__)
+      return CucumberFeed.dir
     end
   end
 end

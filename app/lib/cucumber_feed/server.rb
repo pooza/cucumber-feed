@@ -8,12 +8,13 @@ module CucumberFeed
       @renderer = FeedRenderer.create(site)
       @renderer.type = type
       return @renderer.to_s
-    rescue LoadError
+    rescue LoadError, NameError
       @renderer = Ginseng::Web::XMLRenderer.new
       @renderer.status = 404
       @renderer.message = "Resource #{request.path} not found."
       return @renderer.to_s
     rescue => e
+      e = Ginseng::Error.create(e)
       @renderer = Ginseng::Web::XMLRenderer.new
       @renderer.status = e.status
       @renderer.message = e.message
