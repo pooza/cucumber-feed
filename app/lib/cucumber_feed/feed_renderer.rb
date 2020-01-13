@@ -135,7 +135,7 @@ module CucumberFeed
       unless url.absolute?
         local_url = url
         url = Ginseng::URI.parse(self.url)
-        if href.to_s =~ %r{^/}
+        if %r{^/}.match?(href.to_s)
           url.path = local_url.path
         else
           url.path = File.join(url.path, local_url.path)
