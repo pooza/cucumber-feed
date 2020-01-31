@@ -25,11 +25,11 @@ module CucumberFeed
     def entries
       unless @entries
         @entries = []
-        source.xpath('//div[@class="u-list-news"]//a').each do |node|
+        source.xpath('//ul[@class="m-list-topics"]//a').each do |node|
           @entries.push({
             link: parse_url(node.attribute('href')).to_s,
-            title: node.search('p').inner_text.gsub(/\s+/, ' ').strip,
-            date: Time.parse(node.search('p[@class="data-date"]').inner_text),
+            title: node.search('dd').inner_text,
+            date: Time.parse(node.search('dt').inner_text),
             image: node.search('img').attribute('src').value,
           })
         end

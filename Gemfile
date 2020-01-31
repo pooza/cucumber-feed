@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.6.5'
+ruby '2.7.0'
 gem 'bootsnap'
 gem 'ginseng-core', git: 'https://github.com/pooza/ginseng-core.git'
 gem 'ginseng-web', git: 'https://github.com/pooza/ginseng-web.git'

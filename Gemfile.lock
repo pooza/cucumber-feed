@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/pooza/ginseng-core.git
-  revision: 1b18bdae9b93781153969e1dbc92e2c5b7691455
+  revision: b7c9a83abbf3b52c1b4ee28cfc8f15888a2bc6a3
   specs:
-    ginseng-core (1.5.4)
+    ginseng-core (1.5.7)
       activesupport
       addressable
       bundler
@@ -18,9 +18,9 @@ GIT
 
 GIT
   remote: https://github.com/pooza/ginseng-web.git
-  revision: 6445990a30e0c3f2dcd0dcfc943816f7f3be7203
+  revision: ff526b389f495066564994f9e7072df911f5c5eb
   specs:
-    ginseng-web (1.0.6)
+    ginseng-web (1.0.7)
       rack-test
       sass
       sinatra
@@ -48,7 +48,7 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     eventmachine (1.2.7)
-    ffi (1.11.3)
+    ffi (1.12.1)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -77,7 +77,7 @@ GEM
       ast (~> 2.4.0)
     power_assert (1.1.5)
     public_suffix (4.0.3)
-    rack (2.1.1)
+    rack (2.1.2)
     rack-protection (2.0.8.1)
       rack
     rack-test (1.1.0)
@@ -132,7 +132,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.6)
     unicode (0.4.4.4)
-    unicode-display_width (1.6.0)
+    unicode-display_width (1.6.1)
     yajl-ruby (1.4.1)
     zeitwerk (2.2.2)
 
@@ -149,7 +149,7 @@ DEPENDENCIES
   sanitize
 
 RUBY VERSION
-   ruby 2.6.5p114
+   ruby 2.7.0p0
 
 BUNDLED WITH
    2.1.4
