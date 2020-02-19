@@ -189,7 +189,7 @@ module CucumberFeed
     def cache_path(type)
       return File.join(
         Environment.dir,
-        'tmp/caches',
+        'tmp/cache',
         Digest::SHA1.hexdigest(self.class.name) + create_extension(type),
       )
     end
