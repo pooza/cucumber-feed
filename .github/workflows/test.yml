@@ -21,7 +21,6 @@ jobs:
       - name: Run lint
         run: |
           bundle exec rubocop
-          bundle exec rake erb:check
       - name: Run test
         run: |
           bundle exec rake test
