@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/pooza/ginseng-core.git
-  revision: b7c9a83abbf3b52c1b4ee28cfc8f15888a2bc6a3
+  revision: 22bb0407269e10ee90ce6cd2946c8c6286c096a5
   specs:
-    ginseng-core (1.5.7)
+    ginseng-core (1.6.2)
       activesupport
       addressable
       bundler
@@ -11,16 +11,19 @@ GIT
       httparty
       rake
       rest-client
+      rubocop
+      rubocop-performance
       syslog-logger
       test-unit
       unicode
       yajl-ruby
+      zeitwerk
 
 GIT
   remote: https://github.com/pooza/ginseng-web.git
-  revision: ff526b389f495066564994f9e7072df911f5c5eb
+  revision: 4d014476dadac085f041fd58cd71db5324c788c6
   specs:
-    ginseng-web (1.0.7)
+    ginseng-web (1.1.2)
       rack-test
       sass
       sinatra
@@ -40,7 +43,7 @@ GEM
     ast (2.4.0)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
-    concurrent-ruby (1.1.5)
+    concurrent-ruby (1.1.6)
     crass (1.0.6)
     csv (3.1.2)
     daemon-spawn (0.4.2)
@@ -48,7 +51,7 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     eventmachine (1.2.7)
-    ffi (1.12.1)
+    ffi (1.12.2)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -63,12 +66,12 @@ GEM
     mime-types-data (3.2019.1009)
     mini_portile2 (2.4.0)
     minitest (5.14.0)
-    msgpack (1.3.1)
+    msgpack (1.3.3)
     multi_xml (0.6.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     netrc (0.11.0)
-    nokogiri (1.10.7)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     nokogumbo (2.0.2)
       nokogiri (~> 1.8, >= 1.8.4)
@@ -77,7 +80,7 @@ GEM
       ast (~> 2.4.0)
     power_assert (1.1.5)
     public_suffix (4.0.3)
-    rack (2.1.2)
+    rack (2.2.2)
     rack-protection (2.0.8.1)
       rack
     rack-test (1.1.0)
@@ -92,11 +95,13 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rubocop (0.79.0)
+    rexml (3.2.4)
+    rubocop (0.80.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.7.0.1)
       rainbow (>= 2.2.2, < 4.0)
+      rexml
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
     rubocop-performance (1.5.2)
@@ -144,8 +149,6 @@ DEPENDENCIES
   ginseng-core!
   ginseng-web!
   nokogiri
-  rubocop
-  rubocop-performance
   sanitize
 
 RUBY VERSION
