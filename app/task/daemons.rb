@@ -15,3 +15,8 @@ namespace :cucumber do
     end
   end
 end
+
+[:start, :stop, :restart].each do |action|
+  desc "#{action} all"
+  task action => "cucumber:thin:#{action}"
+end
