@@ -1,7 +1,4 @@
 require 'bootsnap'
-require 'active_support'
-require 'active_support/core_ext'
-require 'zeitwerk'
 require 'ginseng'
 require 'ginseng/web'
 
@@ -28,9 +25,9 @@ module CucumberFeed
     config['dirs'].each do |d|
       loader.push_dir(File.join(dir, 'app', d))
     end
-    loader.setup
+    return loader
   end
 end
 
 CucumberFeed.bootsnap
-CucumberFeed.loader
+CucumberFeed.loader.setup

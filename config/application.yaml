@@ -1,5 +1,5 @@
 package:
-  version: 1.3.17
+  version: 1.3.19
   url: https://github.com/pooza/cucumber-feed
   authors:
     - Tatsuya Koishi
@@ -10,3 +10,8 @@ feeds:
   - garden
   - toei
   - miracle_leap
+thin:
+  timeout: 30
+  port: 3003
+  environment: production
+  rackup: app/initializer/config.ru
