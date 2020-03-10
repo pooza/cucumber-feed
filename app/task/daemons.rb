@@ -1,5 +1,5 @@
 namespace :cucumber do
-  [:thin].each do |ns|
+  [:puma].each do |ns|
     namespace ns do
       [:start, :stop].each do |action|
         desc "#{action} #{ns}"
@@ -18,5 +18,5 @@ end
 
 [:start, :stop, :restart].each do |action|
   desc "#{action} all"
-  task action => "cucumber:thin:#{action}"
+  task action => "cucumber:puma:#{action}"
 end
