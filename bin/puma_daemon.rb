@@ -7,4 +7,4 @@ ENV['BUNDLE_GEMFILE'] ||= File.join(dir, 'Gemfile')
 require 'bundler/setup'
 require 'cucumber_feed'
 
-CucumberFeed::ThinDaemon.spawn!
+CucumberFeed::PumaDaemon.spawn!

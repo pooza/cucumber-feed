@@ -44,7 +44,7 @@ module CucumberFeed
 
     def create_url(href)
       url = Ginseng::URI.parse('http://localhost')
-      url.port = @config['/thin/port'].to_i
+      url.port = @config['/puma/port'].to_i
       url.path = href
       return url
     end
