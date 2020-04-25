@@ -26,6 +26,7 @@ module CucumberFeed
       unless @entries
         @entries = []
         source.xpath('//ul[@class="m-list-topics"]//a').each do |node|
+          next unless node.attribute('href')
           @entries.push({
             link: parse_url(node.attribute('href')).to_s,
             title: node.search('dd').inner_text,

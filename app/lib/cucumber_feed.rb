@@ -25,6 +25,12 @@ module CucumberFeed
     loader.collapse('app/lib/cucumber_feed/*')
     return loader
   end
+
+  def self.load_tasks
+    Dir.glob(File.join(Environment.dir, 'app/task/*.rb')).sort.each do |f|
+      require f
+    end
+  end
 end
 
 CucumberFeed.bootsnap

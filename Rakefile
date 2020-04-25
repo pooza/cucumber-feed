@@ -5,6 +5,4 @@ ENV['BUNDLE_GEMFILE'] ||= File.join(dir, 'Gemfile')
 require 'bundler/setup'
 require 'cucumber_feed'
 
-Dir.glob(File.join(CucumberFeed::Environment.dir, 'app/task/*.rb')).sort.each do |f|
-  require f
-end
+CucumberFeed.load_tasks
