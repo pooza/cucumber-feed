@@ -1,6 +1,7 @@
 require 'rss'
 require 'digest/sha1'
 require 'sanitize'
+require 'nokogiri'
 
 module CucumberFeed
   class FeedRenderer < Ginseng::Web::Renderer
@@ -209,8 +210,10 @@ module CucumberFeed
       return true
     end
 
-    def sanitize(body)
-      return Sanitize.clean(body)
+    def sanitize(text)
+      text = Sanitize.clean(text)
+      text = Nokogiri::HTML.parse(text).text
+      return text
     end
   end
 end
