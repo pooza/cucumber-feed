@@ -1,6 +1,5 @@
 require 'bootsnap'
 require 'ginseng'
-require 'ginseng/web'
 
 module CucumberFeed
   def self.dir
@@ -35,3 +34,4 @@ end
 
 CucumberFeed.bootsnap
 CucumberFeed.loader.setup
+Bundler.require
