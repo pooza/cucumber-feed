@@ -1,6 +1,5 @@
 require 'rss'
 require 'digest/sha1'
-require 'sanitize'
 require 'nokogiri'
 
 module CucumberFeed
@@ -136,7 +135,7 @@ module CucumberFeed
       unless url.absolute?
         local_url = url
         url = Ginseng::URI.parse(self.url)
-        if %r{^/}.match?(href.to_s)
+        if href.to_s.start_with?('/')
           url.path = local_url.path
         else
           url.path = File.join(url.path, local_url.path)
@@ -208,12 +207,6 @@ module CucumberFeed
       return false unless File.exist?(cache_path(:atom))
       return false unless File.exist?(digest_path)
       return true
-    end
-
-    def sanitize(text)
-      text = Sanitize.clean(text)
-      text = Nokogiri::HTML.parse(text).text
-      return text
     end
   end
 end
