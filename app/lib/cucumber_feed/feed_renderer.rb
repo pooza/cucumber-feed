@@ -99,15 +99,7 @@ module CucumberFeed
         entries.each do |entry|
           handle_blank_title(entry) unless entry[:title].present?
           maker.items.new_item do |item|
-            item.link = entry[:link]
-            item.title = entry[:title]
-            item.date = entry[:date]
-            next unless entry[:image]
-            url = parse_url(entry[:image])
-            response = @http.get(url)
-            item.enclosure.url = url.to_s
-            item.enclosure.length = response.body.length
-            item.enclosure.type = response.headers['Content-Type']
+            update_item(item, entry)
           end
         end
       end
@@ -123,6 +115,18 @@ module CucumberFeed
       channel.generator = Package.user_agent
     end
 
+    def update_item(item, entry)
+      item.link = entry[:link]
+      item.title = entry[:title]
+      item.date = entry[:date]
+      return unless entry[:image]
+      uri = parse_url(entry[:image])
+      response = @http.get(uri)
+      item.enclosure.url = uri.to_s
+      item.enclosure.length = response.body.length
+      item.enclosure.type = response.headers['Content-Type']
+    end
+
     def handle_blank_title(entry)
       message = {feed: self.class.name, message: 'Blank title'}
       message.update(entry)
@@ -133,7 +137,7 @@ module CucumberFeed
     def parse_url(href)
       url = Ginseng::URI.parse(href)
       unless url.absolute?
-        local_url = url
+        local_url = url.clone
         url = Ginseng::URI.parse(self.url)
         if href.to_s.start_with?('/')
           url.path = local_url.path
