@@ -198,7 +198,7 @@ module CucumberFeed
       return File.join(
         Environment.dir,
         'tmp/digests',
-        Digest::SHA1.hexdigest(self.class.name) + '.sha1',
+        "#{Digest::SHA1.hexdigest(self.class.name)}.sha1",
       )
     end
 
