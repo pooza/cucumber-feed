@@ -33,6 +33,8 @@ module CucumberFeed
             date: Time.parse(node.search('dt').inner_text),
             image: node.search('img').attribute('src').value,
           })
+        rescue => e
+          logger.error(class: self.class.to_s, error: e.message)
         end
       end
       return @entries
