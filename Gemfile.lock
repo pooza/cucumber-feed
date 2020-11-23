@@ -19,9 +19,9 @@ GIT
 
 GIT
   remote: https://github.com/pooza/ginseng-web.git
-  revision: b848898f65c88b915eccee1dbf8ea18b4e6ea264
+  revision: e654386d94ba2e7015622848bab13565fd63c938
   specs:
-    ginseng-web (1.3.0)
+    ginseng-web (1.3.2)
       puma
       sass
       sinatra
@@ -78,7 +78,7 @@ GEM
       ast (~> 2.4.1)
     power_assert (1.2.0)
     public_suffix (4.0.6)
-    puma (5.0.2)
+    puma (5.0.4)
       nio4r (~> 2.0)
     rack (2.2.3)
     rack-protection (2.1.0)
