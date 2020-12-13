@@ -1,4 +1,4 @@
-require 'bootsnap'
+require 'bundler/setup'
 require 'ginseng'
 
 module CucumberFeed
