@@ -16,3 +16,8 @@ puma:
   port: 3003
   pidfile: tmp/pids/puma.pid
   rackup: app/initializer/config.ru
+test:
+  timeout: 20
+  filters:
+    - name: ci
+      cases: []
