@@ -1,12 +1,15 @@
 require 'bundler/setup'
+require 'cucumber_feed/refines'
 require 'ginseng'
 
 module CucumberFeed
+  using Refines
+
   def self.dir
     return File.expand_path('../..', __dir__)
   end
 
-  def self.bootsnap
+  def self.setup_bootsnap
     Bootsnap.setup(
       cache_dir: File.join(dir, 'tmp/cache'),
       development_mode: Environment.development?,
@@ -33,6 +36,6 @@ module CucumberFeed
   end
 end
 
-CucumberFeed.bootsnap
-CucumberFeed.loader.setup
 Bundler.require
+CucumberFeed.loader.setup
+CucumberFeed.setup_bootsnap
