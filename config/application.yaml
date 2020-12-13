@@ -5,6 +5,7 @@ package:
     - Tatsuya Koishi
   email:
     - tkoishi@b-shock.co.jp
+  license: MIT
 environment: development
 feeds:
   - abc
