@@ -1,7 +1,8 @@
 module CucumberFeed
-  class MiracleLeapFeedRendererTest < Test::Unit::TestCase
+  class TropicalRougeFeedRendererTest < Test::Unit::TestCase
     def setup
-      @renderer = FeedRenderer.create('miracle_leap')
+      @renderer = FeedRenderer.create('tropical_rouge')
+      return if Environment.ci?
       @config = Config.instance
       @config['/slack/hooks'] = []
     end
@@ -20,6 +21,11 @@ module CucumberFeed
       @renderer.type = 'atom'
       assert(@renderer.to_s.present?)
       assert_equal(@renderer.type, 'application/atom+xml; charset=UTF-8')
+    end
+
+    def test_parse_url
+      uri = @renderer.parse_url('../character/')
+      pp uri.to_s
     end
   end
 end
