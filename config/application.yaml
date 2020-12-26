@@ -1,5 +1,5 @@
 package:
-  version: 1.4.0
+  version: 1.4.1
   url: https://github.com/pooza/cucumber-feed
   authors:
     - Tatsuya Koishi
@@ -11,7 +11,7 @@ feeds:
   - abc
   - garden
   - toei
-  - miracle_leap
+  - tropical_rouge
 puma:
   port: 3003
   pidfile: tmp/pids/puma.pid

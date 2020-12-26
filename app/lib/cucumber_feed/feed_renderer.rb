@@ -142,7 +142,7 @@ module CucumberFeed
         if href.to_s.start_with?('/')
           url.path = local_url.path
         else
-          url.path = File.join(url.path, local_url.path)
+          url.path = File.expand_path(local_url.path, Ginseng::URI.parse(source_url).path)
         end
         url.query = local_url.query
         url.fragment = local_url.fragment
