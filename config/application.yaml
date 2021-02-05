@@ -1,5 +1,5 @@
 package:
-  version: 1.4.1
+  version: 1.4.2
   url: https://github.com/pooza/cucumber-feed
   authors:
     - Tatsuya Koishi
@@ -12,6 +12,11 @@ feeds:
   - garden
   - toei
   - tropical_rouge
+  - healingood_movie
+http:
+  retry:
+    limit: 3
+    seconds: 1
 puma:
   port: 3003
   pidfile: tmp/pids/puma.pid
@@ -23,5 +28,6 @@ test:
       cases:
         - abc_feed_renderer
         - garden_feed_renderer
-        - miracle_leap_feed_renderer
         - toei_feed_renderer
+        - tropical_rouge_feed_renderer
+        - healingood_movie_feed_renderer
