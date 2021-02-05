@@ -13,6 +13,10 @@ feeds:
   - toei
   - tropical_rouge
   - healingood_movie
+http:
+  retry:
+    limit: 3
+    seconds: 1
 puma:
   port: 3003
   pidfile: tmp/pids/puma.pid

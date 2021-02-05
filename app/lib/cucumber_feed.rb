@@ -1,6 +1,5 @@
 require 'bundler/setup'
 require 'cucumber_feed/refines'
-require 'ginseng'
 
 module CucumberFeed
   using Refines
@@ -14,7 +13,6 @@ module CucumberFeed
       cache_dir: File.join(dir, 'tmp/cache'),
       development_mode: Environment.development?,
       load_path_cache: true,
-      autoload_paths_cache: true,
       compile_cache_iseq: true,
       compile_cache_yaml: true,
     )
@@ -34,8 +32,8 @@ module CucumberFeed
       require f
     end
   end
-end
 
-Bundler.require
-CucumberFeed.loader.setup
-CucumberFeed.setup_bootsnap
+  Bundler.require
+  loader.setup
+  setup_bootsnap
+end
