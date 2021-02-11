@@ -1,11 +1,12 @@
 GIT
   remote: https://github.com/pooza/ginseng-core.git
-  revision: 97a363fa41c88dfaed23adb97ac4867c820ba9e9
+  revision: ec27f50f73feb430cdf959bb10f7c22b84012333
   specs:
-    ginseng-core (1.10.1)
+    ginseng-core (1.10.3)
       activesupport (>= 6.1.1)
       addressable
       daemon-spawn
+      facets
       httparty
       json-schema
       mail
@@ -14,7 +15,6 @@ GIT
       rake
       rest-client
       sanitize
-      syslog-logger
       unicode
       yajl-ruby
       zeitwerk (>= 2.4.0)
@@ -32,7 +32,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.1.1)
+    activesupport (6.1.2.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -48,6 +48,7 @@ GEM
     daemon-spawn (0.4.2)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    facets (3.1.0)
     ffi (1.14.2)
     http-accept (1.7.0)
     http-cookie (1.0.3)
@@ -137,7 +138,6 @@ GEM
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
-    syslog-logger (1.6.8)
     temple (0.8.2)
     test-unit (3.4.0)
       power_assert
