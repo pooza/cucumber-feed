@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.7.2'
 gem 'bootsnap'
-gem 'ginseng-core', github: 'pooza/ginseng-core'
+gem 'ginseng-core', github: 'pooza/ginseng-core', require: 'ginseng'
 gem 'ginseng-web', github: 'pooza/ginseng-web', require: 'ginseng/web'
 
 group :development do
