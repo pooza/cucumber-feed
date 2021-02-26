@@ -11,6 +11,10 @@ module CucumberFeed
       return 'http://www.toei-anim.co.jp/tv/precure/'
     end
 
+    def source_url
+      return 'http://www.toei-anim.co.jp/tv/precure/news/'
+    end
+
     private
 
     def source
